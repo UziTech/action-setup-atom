@@ -4,7 +4,7 @@
   "description": "Setup Atom and APM",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "npm run lint",
     "lint": "eslint .",
     "build": "ncc build index.js"
   },
@@ -33,7 +33,6 @@
   },
   "devDependencies": {
     "@zeit/ncc": "^0.20.5",
-    "eslint": "^6.6.0",
-    "jest": "^24.9.0"
+    "eslint": "^6.6.0"
   }
 }
