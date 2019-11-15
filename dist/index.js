@@ -989,9 +989,8 @@ async function downloadOnLinux(channel) {
 	await exec.exec("dpkg-deb", ["-x", downloadFile, folder]);
 	const binPath = path.join(folder, "usr", "bin");
 	if (channel !== "stable") {
-		// await exec.exec("ln", ["-s", path.join(binPath, `atom-${channel}`), path.join(binPath, "atom")]);
+		await exec.exec("ln", ["-s", path.join(binPath, `atom-${channel}`), path.join(binPath, "atom")]);
 		await exec.exec("ln", ["-s", path.join(binPath, `apm-${channel}`), path.join(binPath, "apm")]);
-		await exec.exec(`alias atom=${path.join(binPath, `atom-${channel}`)}`);
 	}
 	return [binPath];
 }
