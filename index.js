@@ -52,6 +52,7 @@ async function downloadOnLinux(channel) {
 		await exec.exec("ln", ["-s", path.join(binPath, `atom-${channel}`), path.join(binPath, "apm")]);
 		// atomfolder += `-${channel}`;
 	}
+	await exec.exec("ls", [binPath]);
 	// const atomPath = path.join(folder, "usr", "share", atomfolder, "resources", "app");
 	// const apmPath = path.join(atomPath, "apm", "bin");
 	// /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16
