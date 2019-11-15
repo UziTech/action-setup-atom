@@ -24,7 +24,7 @@ jobs:
       with:
         channel: 'beta'
     - name: Get Atom versions
-      run: atom-beta -v
+      run: atom -v
     - name: Get APM versions
       run: apm -v
 

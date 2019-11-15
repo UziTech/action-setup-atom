@@ -987,12 +987,13 @@ async function downloadOnLinux(channel) {
 	await exec.exec("/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16");
 	await core.exportVariable("DISPLAY", ":99");
 	await exec.exec("dpkg-deb", ["-x", downloadFile, folder]);
-	const binPath = path.join(folder, "usr", "bin");
+	let atomfolder = "atom";
 	if (channel !== "stable") {
-		await exec.exec("ln", ["-s", path.join(binPath, `atom-${channel}`), path.join(binPath, "atom")]);
-		await exec.exec("ln", ["-s", path.join(binPath, `apm-${channel}`), path.join(binPath, "apm")]);
+		atomfolder += `-${channel}`;
 	}
-	return [binPath];
+	const atomPath = path.join(folder, "usr", "share", atomfolder);
+	const apmPath = path.join(atomPath, "resources", "app", "apm", "bin");
+	return [atomPath, apmPath];
 }
 
 async function run() {
