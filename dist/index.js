@@ -964,7 +964,8 @@ async function run() {
 	try {
 		const channel = core.getInput("channel", {required: true});
 		const atomPath = await downloadAtom(channel);
-		console.log(atomPath);
+		await exec.exec("ls " + atomPath);
+
 		await core.addPath(atomPath);
 		console.log("Atom version:");
 		await exec.exec("atom -v");
