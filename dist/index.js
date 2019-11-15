@@ -961,7 +961,7 @@ async function downloadOnWindows(channel) {
 	if (channel !== "stable") {
 		atomfolder += ` ${channel[0].toUpperCase() + channel.substring(1)}`;
 	}
-	return path.join(folder, atomfolder, "resources", "cli");
+	return [path.join(folder, atomfolder, "resources", "cli")];
 }
 
 async function downloadOnMacos(channel) {
@@ -975,21 +975,19 @@ async function downloadOnMacos(channel) {
 	atomfolder += ".app";
 	const atomPath = path.join(folder, atomfolder, "Contents", "Resources", "app");
 	const apmPath = path.join(folder, atomfolder, "Contents", "Resources", "app", "apm", "node_modules", ".bin");
-	await exec.exec("ls", [atomPath]);
-	await exec.exec("ls", [apmPath]);
-	return atomPath;// + path.delimiter + apmPath;
+	return [atomPath, apmPath];
 }
 
 async function downloadOnLinux(channel) {
 	const downloadFile = await tc.downloadTool("https://atom.io/download/deb?channel=" + channel);
-	return await tc.extractZip(downloadFile, path.join(process.env.GITHUB_WORKSPACE, "atom"));
+	return [await tc.extractZip(downloadFile, path.join(process.env.GITHUB_WORKSPACE, "atom"))];
 }
 
 async function run() {
 	try {
 		const channel = core.getInput("channel", {required: true}).toLowerCase();
-		const atomPath = await downloadAtom(channel);
-		await core.addPath(atomPath);
+		const paths = await downloadAtom(channel);
+		paths.forEach(p => core.addPath(p));
 	} catch (error) {
 		core.setFailed(`Atom download failed with error: ${error.message}`);
 	}
