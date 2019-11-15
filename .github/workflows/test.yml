@@ -11,10 +11,10 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - uses: ./
-    - name: Get versions
-      run: |
-        atom -v
-        apm -v
+    - name: Get Atom versions
+      run: atom.sh -v
+    - name: Get APM versions
+      run: apm -v
 
   linux-beta:
     runs-on: ubuntu-latest
@@ -23,20 +23,20 @@ jobs:
     - uses: ./
       with:
         channel: 'beta'
-    - name: Get versions
-      run: |
-        atom -v
-        apm -v
+    - name: Get Atom versions
+      run: atom.sh -v
+    - name: Get APM versions
+      run: apm -v
 
   macos-stable:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
     - uses: ./
-    - name: Get versions
-      run: |
-        atom -v
-        apm -v
+    - name: Get Atom versions
+      run: atom.sh -v
+    - name: Get APM versions
+      run: apm -v
 
   macos-beta:
     runs-on: macos-latest
@@ -45,20 +45,20 @@ jobs:
     - uses: ./
       with:
         channel: 'beta'
-    - name: Get versions
-      run: |
-        atom -v
-        apm -v
+    - name: Get Atom versions
+      run: atom.sh -v
+    - name: Get APM versions
+      run: apm -v
 
   windows-stable:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v1
     - uses: ./
-    - name: Get versions
-      run: |
-        atom -v
-        apm -v
+    - name: Get Atom versions
+      run: atom -v
+    - name: Get APM versions
+      run: apm -v
 
   windows-beta:
     runs-on: windows-latest
@@ -67,7 +67,7 @@ jobs:
     - uses: ./
       with:
         channel: 'beta'
-    - name: Get versions
-      run: |
-        atom -v
-        apm -v
+    - name: Get Atom versions
+      run: atom -v
+    - name: Get APM versions
+      run: apm -v
