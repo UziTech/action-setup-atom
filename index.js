@@ -23,7 +23,7 @@ async function downloadAtom(channel = "stable") {
 async function run() {
 	try {
 		const channel = core.getInput("channel", {required: true});
-		const atomPath = downloadAtom(channel);
+		const atomPath = await downloadAtom(channel);
 		console.log(atomPath);
 		await core.addPath(atomPath);
 		console.log("Atom version:");
