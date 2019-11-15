@@ -45,14 +45,18 @@ async function downloadOnLinux(channel) {
 	const downloadFile = await tc.downloadTool("https://atom.io/download/deb?channel=" + channel);
 	const folder = path.join(process.env.GITHUB_WORKSPACE, "atom");
 	await exec.exec("dpkg-deb", ["-x", downloadFile, folder]);
-	let atomfolder = "atom";
-	if (channel !== "stable") {
-		atomfolder += `-${channel}`;
-	}
 	const binPath = path.join(folder, "usr", "bin");
-	const atomPath = path.join(folder, "usr", "share", atomfolder, "resources", "app");
-	const apmPath = path.join(atomPath, "apm", "bin");
-	return [binPath, atomPath, apmPath];
+	// let atomfolder = "atom";
+	if (channel !== "stable") {
+		await exec.exec("ln", ["-s", path.join(binPath, `atom-${channel}`), path.join(binPath, "atom")]);
+		await exec.exec("ln", ["-s", path.join(binPath, `atom-${channel}`), path.join(binPath, "apm")]);
+		// atomfolder += `-${channel}`;
+	}
+	// const atomPath = path.join(folder, "usr", "share", atomfolder, "resources", "app");
+	// const apmPath = path.join(atomPath, "apm", "bin");
+	// /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16
+	// export DISPLAY=":99"
+	return [binPath];//, atomPath, apmPath];
 }
 
 async function run() {
