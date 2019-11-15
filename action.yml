@@ -1,0 +1,10 @@
+name: 'Setup Atom'
+description: 'Setup Atom and APM'
+inputs:
+  channel:
+    description: 'Channel'
+    required: true
+    default: 'Stable'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

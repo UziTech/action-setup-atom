@@ -1,0 +1,61 @@
+name: "test-local"
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  linux-stable:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: npm ci
+    - run: npm test
+    - uses: ./
+
+  linux-beta:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: npm ci
+    - run: npm test
+    - uses: ./
+      with:
+        channel: 'beta'
+
+  macos-stable:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: npm ci
+    - run: npm test
+    - uses: ./
+
+  macos-beta:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: npm ci
+    - run: npm test
+    - uses: ./
+      with:
+        channel: 'beta'
+
+  windows-stable:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: npm ci
+    - run: npm test
+    - uses: ./
+
+  windows-beta:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: npm ci
+    - run: npm test
+    - uses: ./
+      with:
+        channel: 'beta'
