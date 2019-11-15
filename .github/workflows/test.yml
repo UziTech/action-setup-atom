@@ -12,7 +12,9 @@ jobs:
     - uses: actions/checkout@v1
     - uses: ./
     - name: Get versions
-      run: atom -v && apm -v
+      run: |
+        atom -v
+        apm -v
 
   linux-beta:
     runs-on: ubuntu-latest
@@ -22,7 +24,9 @@ jobs:
       with:
         channel: 'beta'
     - name: Get versions
-      run: atom -v && apm -v
+      run: |
+        atom -v
+        apm -v
 
   macos-stable:
     runs-on: macos-latest
@@ -30,7 +34,9 @@ jobs:
     - uses: actions/checkout@v1
     - uses: ./
     - name: Get versions
-      run: atom -v && apm -v
+      run: |
+        atom -v
+        apm -v
 
   macos-beta:
     runs-on: macos-latest
@@ -40,7 +46,9 @@ jobs:
       with:
         channel: 'beta'
     - name: Get versions
-      run: atom -v && apm -v
+      run: |
+        atom -v
+        apm -v
 
   windows-stable:
     runs-on: windows-latest
@@ -48,7 +56,9 @@ jobs:
     - uses: actions/checkout@v1
     - uses: ./
     - name: Get versions
-      run: atom -v && apm -v
+      run: |
+        atom -v
+        apm -v
 
   windows-beta:
     runs-on: windows-latest
@@ -58,4 +68,6 @@ jobs:
       with:
         channel: 'beta'
     - name: Get versions
-      run: atom -v && apm -v
+      run: |
+        atom -v
+        apm -v
