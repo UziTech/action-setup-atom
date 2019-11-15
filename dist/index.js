@@ -980,7 +980,9 @@ async function downloadOnMacos(channel) {
 
 async function downloadOnLinux(channel) {
 	const downloadFile = await tc.downloadTool("https://atom.io/download/deb?channel=" + channel);
-	return [await tc.extractZip(downloadFile, path.join(process.env.GITHUB_WORKSPACE, "atom"))];
+	const folder = path.join(process.env.GITHUB_WORKSPACE, "atom");
+	await exec.exec("dpkg-deb", ["-x", downloadFile, folder]);
+	return [path.join(folder, "usr", "bin")];
 }
 
 async function run() {
