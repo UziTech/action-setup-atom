@@ -20,13 +20,22 @@ async function downloadAtom(channel = "stable") {
 	}
 }
 
+function getCliPath(channel, atomPath) {
+	let folder = "Atom";
+	if (channel !== "stable") {
+		folder += ` ${channel[0].toUpperCase() + channel.substring(1)}`;
+	}
+	return path.join(atomPath, folder, "resources", "cli");
+}
+
 async function run() {
 	try {
-		const channel = core.getInput("channel", {required: true});
+		const channel = core.getInput("channel", {required: true}).toLowerCase();
 		const atomPath = await downloadAtom(channel);
-		await exec.exec("ls " + atomPath);
+		const cliPath = getCliPath(channel, atomPath);
+		await exec.exec("ls " + cliPath);
 
-		await core.addPath(atomPath);
+		await core.addPath(cliPath);
 		console.log("Atom version:");
 		await exec.exec("atom -v");
 		console.log("APM version:");
