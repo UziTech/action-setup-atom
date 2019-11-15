@@ -48,16 +48,12 @@ async function downloadOnLinux(channel) {
 	await core.exportVariable("DISPLAY", ":99");
 	await exec.exec("dpkg-deb", ["-x", downloadFile, folder]);
 	const binPath = path.join(folder, "usr", "bin");
-	let atomfolder = "atom";
 	if (channel !== "stable") {
+		// await exec.exec("ln", ["-s", path.join(binPath, `atom-${channel}`), path.join(binPath, "atom")]);
 		await exec.exec("ln", ["-s", path.join(binPath, `apm-${channel}`), path.join(binPath, "apm")]);
-		atomfolder += `-${channel}`;
+		await exec.exec(`alias atom=${path.join(binPath, `atom-${channel}`)}`);
 	}
-	await exec.exec("ls", [binPath]);
-	const atomPath = path.join(folder, "usr", "share", atomfolder, "resources", "app");
-	await exec.exec("ln", ["-s", path.join(atomPath, "atom.sh"), path.join(atomPath, "atom")]);
-	// const apmPath = path.join(atomPath, "apm", "bin");
-	return [binPath, atomPath];
+	return [binPath];
 }
 
 async function run() {
