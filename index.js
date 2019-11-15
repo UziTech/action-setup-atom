@@ -50,14 +50,14 @@ async function downloadOnLinux(channel) {
 	const binPath = path.join(folder, "usr", "bin");
 	let atomfolder = "atom";
 	if (channel !== "stable") {
-		await exec.exec("ln", ["-s", path.join(binPath, `atom-${channel}`), path.join(binPath, "atom")]);
 		await exec.exec("ln", ["-s", path.join(binPath, `apm-${channel}`), path.join(binPath, "apm")]);
 		atomfolder += `-${channel}`;
 	}
 	await exec.exec("ls", [binPath]);
 	const atomPath = path.join(folder, "usr", "share", atomfolder, "resources", "app");
-	const apmPath = path.join(atomPath, "apm", "bin");
-	return [binPath, apmPath];
+	await exec.exec("ln", ["-s", path.join(atomPath, "atom.sh"), path.join(atomPath, "atom")]);
+	// const apmPath = path.join(atomPath, "apm", "bin");
+	return [binPath, atomPath];
 }
 
 async function run() {

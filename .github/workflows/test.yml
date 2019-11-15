@@ -23,14 +23,10 @@ jobs:
     - uses: ./
       with:
         channel: 'beta'
-    - name: Get Atom-beta versions
-      run: atom-beta -v
+    - name: Get Atom versions
+      run: atom -v & apm -v
     - name: Get APM versions
       run: apm -v
-    - name: Get APM-beta versions
-      run: apm-beta -v
-    - name: Get Atom versions
-      run: atom -v
 
   macos-stable:
     runs-on: macos-latest
