@@ -1,0 +1,29 @@
+{
+  "name": "action-setup-atom",
+  "version": "1.0.0",
+  "description": "Setup Atom and APM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "ncc build ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UziTech/action-setup-atom.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UziTech/action-setup-atom/issues"
+  },
+  "homepage": "https://github.com/UziTech/action-setup-atom#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.0",
+    "@actions/exec": "^1.0.1",
+    "@actions/tool-cache": "^1.1.2"
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0"
+  }
+}
