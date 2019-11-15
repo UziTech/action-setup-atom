@@ -35,7 +35,7 @@ async function downloadOnMacos(channel) {
 	}
 	atomfolder += ".app";
 	const atomPath = path.join(folder, atomfolder, "Contents", "Resources", "app");
-	await exec.exec("cp", ["--link", path.join(atomPath, "atom.sh"), path.join(atomPath, "atom")]);
+	await exec.exec("ln", ["-s", path.join(atomPath, "atom.sh"), path.join(atomPath, "atom")]);
 	// await io.cp(path.join(atomPath, "atom.sh"), path.join(atomPath, "atom"));
 	const apmPath = path.join(atomPath, "apm", "bin");
 	return [atomPath, apmPath];
