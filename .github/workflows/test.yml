@@ -34,7 +34,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: ./
     - name: Get Atom versions
-      run: atom.sh -v
+      run: atom -v
     - name: Get APM versions
       run: apm -v
 
@@ -46,7 +46,7 @@ jobs:
       with:
         channel: 'beta'
     - name: Get Atom versions
-      run: atom.sh -v
+      run: atom -v
     - name: Get APM versions
       run: apm -v
 

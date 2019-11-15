@@ -2,6 +2,7 @@ const path = require("path");
 const tc = require("@actions/tool-cache");
 const core = require("@actions/core");
 const exec = require("@actions/exec");
+// const io = require("@actions/io");
 
 function downloadAtom(channel = "stable") {
 	switch (process.platform) {
@@ -34,6 +35,8 @@ async function downloadOnMacos(channel) {
 	}
 	atomfolder += ".app";
 	const atomPath = path.join(folder, atomfolder, "Contents", "Resources", "app");
+	await exec.exec("cp", ["--link", path.join(atomPath, "atom.sh"), path.join(atomPath, "atom")]);
+	// await io.cp(path.join(atomPath, "atom.sh"), path.join(atomPath, "atom"));
 	const apmPath = path.join(atomPath, "apm", "bin");
 	return [atomPath, apmPath];
 }
