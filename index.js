@@ -33,13 +33,13 @@ async function run() {
 		const channel = core.getInput("channel", {required: true}).toLowerCase();
 		const atomPath = await downloadAtom(channel);
 		const cliPath = getCliPath(channel, atomPath);
-		await exec.exec("ls " + cliPath);
+		await exec.exec("ls", [cliPath]);
 
 		await core.addPath(cliPath);
-		console.log("Atom version:");
-		await exec.exec("atom -v");
-		console.log("APM version:");
-		await exec.exec("apm -v");
+		// console.log("Atom version:");
+		// await exec.exec("atom -v");
+		// console.log("APM version:");
+		// await exec.exec("apm -v");
 	} catch (error) {
 		core.setFailed(`Atom download failed with error: ${error.message}`);
 	}
