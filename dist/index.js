@@ -982,6 +982,7 @@ async function downloadOnLinux(channel) {
 	const downloadFile = await tc.downloadTool("https://atom.io/download/deb?channel=" + channel);
 	const folder = path.join(process.env.GITHUB_WORKSPACE, "atom");
 	await exec.exec("dpkg-deb", ["-x", downloadFile, folder]);
+	await exec.exec("ls", [path.join(folder, "usr", "bin")]);
 	return [path.join(folder, "usr", "bin")];
 }
 
