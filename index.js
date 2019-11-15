@@ -34,7 +34,7 @@ async function downloadOnMacos(channel) {
 	}
 	atomfolder += ".app";
 	const atomPath = path.join(folder, atomfolder, "Contents", "Resources", "app");
-	const apmPath = path.join(folder, atomfolder, "Contents", "Resources", "app", "apm", "node_modules", ".bin");
+	const apmPath = path.join(atomPath, "apm", "bin");
 	return [atomPath, apmPath];
 }
 
@@ -42,8 +42,16 @@ async function downloadOnLinux(channel) {
 	const downloadFile = await tc.downloadTool("https://atom.io/download/deb?channel=" + channel);
 	const folder = path.join(process.env.GITHUB_WORKSPACE, "atom");
 	await exec.exec("dpkg-deb", ["-x", downloadFile, folder]);
-	await exec.exec("ls", [path.join(folder, "usr", "bin")]);
-	return [path.join(folder, "usr", "bin")];
+	let atomfolder = "atom";
+	if (channel !== "stable") {
+		atomfolder += `-${channel}`;
+	}
+	const binPath = path.join(folder, "usr", "bin");
+	const atomPath = path.join(folder, "usr", "share", atomfolder, "resources", "app");
+	const apmPath = path.join(atomPath, "apm", "bin");
+	await exec.exec("ls", [atomPath]);
+	await exec.exec("ls", [apmPath]);
+	return [binPath, atomPath, apmPath];
 }
 
 async function run() {
