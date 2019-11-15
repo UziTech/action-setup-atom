@@ -955,8 +955,8 @@ function downloadAtom(channel = "stable") {
 }
 
 async function downloadOnWindows(channel) {
-	const atomPath = await tc.downloadTool("https://atom.io/download/windows_zip?channel=" + channel);
-	const folder = await tc.extractZip(atomPath, path.join(process.env.GITHUB_WORKSPACE, "atom"));
+	const downloadFile = await tc.downloadTool("https://atom.io/download/windows_zip?channel=" + channel);
+	const folder = await tc.extractZip(downloadFile, path.join(process.env.GITHUB_WORKSPACE, "atom"));
 	let atomfolder = "Atom";
 	if (channel !== "stable") {
 		atomfolder += ` ${channel[0].toUpperCase() + channel.substring(1)}`;
@@ -965,24 +965,24 @@ async function downloadOnWindows(channel) {
 }
 
 async function downloadOnMacos(channel) {
-	const atomPath = await tc.downloadTool("https://atom.io/download/mac?channel=" + channel);
-	console.log(atomPath);
+	const downloadFile = await tc.downloadTool("https://atom.io/download/mac?channel=" + channel);
 	const folder = path.join(process.env.GITHUB_WORKSPACE, "atom");
-	console.log(folder);
-	await exec.exec("unzip", [atomPath, "-d", folder]);
-	await exec.exec("ls", [folder]);
+	await exec.exec("unzip", ["-q", downloadFile, "-d", folder]);
 	let atomfolder = "Atom";
 	if (channel !== "stable") {
 		atomfolder += ` ${channel[0].toUpperCase() + channel.substring(1)}`;
 	}
 	atomfolder += ".app";
+	const atomPath = path.join(folder, atomfolder, "Contents", "Resources", "app");
 	const apmPath = path.join(folder, atomfolder, "Contents", "Resources", "app", "apm", "node_modules", ".bin");
-	return path.join(folder, atomfolder, "Contents", "Resources", "app") + path.delimiter + apmPath;
+	await exec.exec("ls", [atomPath]);
+	await exec.exec("ls", [apmPath]);
+	return atomPath;// + path.delimiter + apmPath;
 }
 
 async function downloadOnLinux(channel) {
-	const atomPath = await tc.downloadTool("https://atom.io/download/deb?channel=" + channel);
-	return await tc.extractZip(atomPath, path.join(process.env.GITHUB_WORKSPACE, "atom"));
+	const downloadFile = await tc.downloadTool("https://atom.io/download/deb?channel=" + channel);
+	return await tc.extractZip(downloadFile, path.join(process.env.GITHUB_WORKSPACE, "atom"));
 }
 
 async function run() {
