@@ -3,43 +3,53 @@ const tc = require("@actions/tool-cache");
 const core = require("@actions/core");
 const exec = require("@actions/exec");
 
-async function downloadAtom(channel = "stable") {
+function downloadAtom(channel = "stable") {
 	switch (process.platform) {
-		case "win32": {
-			const atomPath = await tc.downloadTool("https://atom.io/download/windows_zip?channel=" + channel);
-			return await tc.extractZip(atomPath, path.join(process.env.GITHUB_WORKSPACE, "atom"));
-		}
-		case "darwin": {
-			const atomPath = await tc.downloadTool("https://atom.io/download/mac?channel=" + channel);
-			return await tc.extractZip(atomPath, path.join(process.env.GITHUB_WORKSPACE, "atom"));
-		}
-		default: {
-			const atomPath = await tc.downloadTool("https://atom.io/download/deb?channel=" + channel);
-			return await tc.extractZip(atomPath, path.join(process.env.GITHUB_WORKSPACE, "atom"));
-		}
+		case "win32":
+			return downloadOnWindows(channel);
+		case "darwin":
+			return downloadOnMacos(channel);
+		default:
+			return downloadOnLinux(channel);
 	}
 }
 
-function getCliPath(channel, atomPath) {
-	let folder = "Atom";
+async function downloadOnWindows(channel) {
+	const atomPath = await tc.downloadTool("https://atom.io/download/windows_zip?channel=" + channel);
+	const folder = await tc.extractZip(atomPath, path.join(process.env.GITHUB_WORKSPACE, "atom"));
+	let atomfolder = "Atom";
 	if (channel !== "stable") {
-		folder += ` ${channel[0].toUpperCase() + channel.substring(1)}`;
+		atomfolder += ` ${channel[0].toUpperCase() + channel.substring(1)}`;
 	}
-	return path.join(atomPath, folder, "resources", "cli");
+	return path.join(folder, atomfolder, "resources", "cli");
+}
+
+async function downloadOnMacos(channel) {
+	const atomPath = await tc.downloadTool("https://atom.io/download/mac?channel=" + channel);
+	console.log(atomPath);
+	const folder = path.join(process.env.GITHUB_WORKSPACE, "atom");
+	console.log(folder);
+	await exec.exec("unzip", [atomPath, "-d", folder]);
+	await exec.exec("ls", [folder]);
+	let atomfolder = "Atom";
+	if (channel !== "stable") {
+		atomfolder += ` ${channel[0].toUpperCase() + channel.substring(1)}`;
+	}
+	atomfolder += ".app";
+	const apmPath = path.join(folder, atomfolder, "Contents", "Resources", "app", "apm", "node_modules", ".bin");
+	return path.join(folder, atomfolder, "Contents", "Resources", "app") + path.delimiter + apmPath;
+}
+
+async function downloadOnLinux(channel) {
+	const atomPath = await tc.downloadTool("https://atom.io/download/deb?channel=" + channel);
+	return await tc.extractZip(atomPath, path.join(process.env.GITHUB_WORKSPACE, "atom"));
 }
 
 async function run() {
 	try {
 		const channel = core.getInput("channel", {required: true}).toLowerCase();
 		const atomPath = await downloadAtom(channel);
-		const cliPath = getCliPath(channel, atomPath);
-		await exec.exec("ls", [cliPath]);
-
-		await core.addPath(cliPath);
-		// console.log("Atom version:");
-		// await exec.exec("atom -v");
-		// console.log("APM version:");
-		// await exec.exec("apm -v");
+		await core.addPath(atomPath);
 	} catch (error) {
 		core.setFailed(`Atom download failed with error: ${error.message}`);
 	}
