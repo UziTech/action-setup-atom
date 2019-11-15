@@ -57,7 +57,7 @@ async function downloadOnLinux(channel) {
 	await exec.exec("ls", [binPath]);
 	const atomPath = path.join(folder, "usr", "share", atomfolder, "resources", "app");
 	const apmPath = path.join(atomPath, "apm", "bin");
-	return [apmPath];
+	return [binPath, apmPath];
 }
 
 async function run() {
