@@ -1,6 +1,6 @@
 {
   "name": "action-setup-atom",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Setup Atom and APM",
   "main": "index.js",
   "scripts": {
