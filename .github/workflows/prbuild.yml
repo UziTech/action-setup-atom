@@ -1,0 +1,14 @@
+name: "Do Not Commit Build in PR"
+on:
+  pull_request:
+    paths:
+      - dist/**
+
+jobs:
+  No-Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Do Not Commit Build in PR
+        run: |
+          echo Do not commit build folder in pull requests.
+          exit 1
