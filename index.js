@@ -27,8 +27,7 @@ async function downloadOnWindows(channel) {
 
 async function downloadOnMacos(channel) {
 	const downloadFile = await tc.downloadTool("https://atom.io/download/mac?channel=" + channel);
-	const folder = path.join(process.env.GITHUB_WORKSPACE, "atom");
-	await exec.exec("unzip", ["-q", downloadFile, "-d", folder]);
+	const folder =  await tc.extractZip(downloadFile, path.join(process.env.GITHUB_WORKSPACE, "atom"));
 	let atomfolder = "Atom";
 	if (channel !== "stable") {
 		atomfolder += ` ${channel[0].toUpperCase() + channel.substring(1)}`;
