@@ -1,0 +1,21 @@
+name: "Release"
+on:
+  push:
+    paths:
+      - dist/**
+    branches:
+      - master
+
+jobs:
+  Release:
+    if: startsWith(github.repository, 'UziTech/') &&
+      github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: NPM install
+        run: npm ci
+      - name: Release 🎉
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npm run semantic-release

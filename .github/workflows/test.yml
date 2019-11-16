@@ -1,7 +1,9 @@
-name: "CI"
+name: "Test and Lint"
 on:
   pull_request:
   push:
+    paths-ignore:
+      - dist/**
     branches:
       - master
 
@@ -45,7 +47,7 @@ jobs:
       run: apm -v
 
   Lint:
-    needs: [Test-stable, Test-beta]
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -55,7 +57,7 @@ jobs:
         run: npm run lint
 
   Build:
-    needs: [Lint]
+    needs: [Test-stable, Test-beta, Lint]
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
@@ -72,23 +74,9 @@ jobs:
             git config user.name "Actions"
             git config credential.helper "store --file=.git/credentials"
             echo "https://${GH_TOKEN}:@github.com" > .git/credentials
-            git commit -m 'chore(build): 🧱 build [skip ci]' -- dist
+            git commit -m 'chore(build): 🧱 build' -- dist
             git push origin HEAD:master
           fi
-
-  Release:
-    needs: [Build]
-    if: startsWith(github.repository, 'UziTech/') &&
-      github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: NPM install
-        run: npm ci
-      - name: Release 🎉
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: npm run semantic-release
 
   Skip:
     if: contains(github.event.head_commit.message, '[skip ci]')
