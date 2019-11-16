@@ -2,8 +2,9 @@ name: "Test and Lint"
 on:
   pull_request:
   push:
-    paths-ignore:
-      - dist/**
+    paths:
+      - "!dist/**"
+      - "!.github/**"
     branches:
       - master
 
