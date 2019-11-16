@@ -72,7 +72,7 @@ jobs:
             git config user.name "Actions"
             git config credential.helper "store --file=.git/credentials"
             echo "https://${GH_TOKEN}:@github.com" > .git/credentials
-            git commit -m '🧱 build [skip ci]' -- dist
+            git commit -m 'chore(build): 🧱 build [skip ci]' -- dist
             git push origin HEAD:master
           fi
 
