@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npm run lint",
     "lint": "eslint .",
-    "build": "ncc build index.js"
+    "build": "ncc build index.js",
+    "check-build": "npm run build && git diff --quiet -- dist"
   },
   "repository": {
     "type": "git",
@@ -32,7 +33,17 @@
     "@actions/tool-cache": "^1.1.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "8.2.0",
+    "@commitlint/config-conventional": "8.2.0",
+    "@semantic-release/changelog": "^3.0.5",
+    "@semantic-release/commit-analyzer": "^6.3.3",
+    "@semantic-release/git": "^7.0.18",
+    "@semantic-release/github": "^5.5.5",
+    "@semantic-release/npm": "^5.3.4",
+    "@semantic-release/release-notes-generator": "^7.3.3",
     "@zeit/ncc": "^0.20.5",
-    "eslint": "^6.6.0"
+    "eslint": "^6.6.0",
+    "husky": "^3.0.9",
+    "semantic-release": "^15.13.30"
   }
 }

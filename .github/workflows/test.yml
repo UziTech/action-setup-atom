@@ -1,4 +1,4 @@
-name: "test-local"
+name: "CI"
 on:
   pull_request:
   push:
@@ -6,9 +6,23 @@ on:
       - master
 
 jobs:
-  linux-stable:
+  Check-build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
+      - name: NPM install
+        run: npm ci
+      - name: Check build
+        run: npm run check-build
+
+  Test-stable:
+    needs: [Check-build]
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
     - uses: actions/checkout@v1
     - uses: ./
     - name: Get Atom versions
@@ -16,58 +30,50 @@ jobs:
     - name: Get APM versions
       run: apm -v
 
-  linux-beta:
+  Test-beta:
+    needs: [Check-build]
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v1
+    - uses: ./
+      with:
+        channel: beta
+    - name: Get Atom versions
+      run: atom -v
+    - name: Get APM versions
+      run: apm -v
+
+  Lint:
+    needs: [Test-stable, Test-beta]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: ./
-      with:
-        channel: 'beta'
-    - name: Get Atom versions
-      run: atom -v
-    - name: Get APM versions
-      run: apm -v
+      - uses: actions/checkout@v1
+      - name: NPM install
+        run: npm ci
+      - name: Lint ✨
+        run: npm run lint
 
-  macos-stable:
-    runs-on: macos-latest
+  Release:
+    needs: [Lint]
+    if: startsWith(github.repository, 'UziTech/') &&
+      github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: ./
-    - name: Get Atom versions
-      run: atom -v
-    - name: Get APM versions
-      run: apm -v
+      - uses: actions/checkout@v1
+      - name: NPM install
+        run: npm ci
+      - name: Release 🎉
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npm run semantic-release
 
-  macos-beta:
-    runs-on: macos-latest
+  Skip:
+    if: contains(github.event.head_commit.message, '[skip ci]')
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: ./
-      with:
-        channel: 'beta'
-    - name: Get Atom versions
-      run: atom -v
-    - name: Get APM versions
-      run: apm -v
-
-  windows-stable:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: ./
-    - name: Get Atom versions
-      run: atom -v
-    - name: Get APM versions
-      run: apm -v
-
-  windows-beta:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: ./
-      with:
-        channel: 'beta'
-    - name: Get Atom versions
-      run: atom -v
-    - name: Get APM versions
-      run: apm -v
+      - name: Skip CI 🚫
+        run: echo skip ci
