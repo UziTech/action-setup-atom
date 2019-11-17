@@ -1,3 +1,5 @@
+![Tests status](https://github.com/UziTech/action-setup-atom/workflows/Tests/badge.svg)
+
 # Setup Atom and APM in GitHub actions
 
 This action downloads Atom and adds `atom` and `apm` to the `PATH`
