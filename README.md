@@ -1,4 +1,4 @@
-![Tests status](https://github.com/UziTech/action-setup-atom/workflows/Tests/badge.svg)
+[![Tests status](https://github.com/UziTech/action-setup-atom/workflows/Tests/badge.svg)](https://github.com/UziTech/action-setup-atom/actions)
 
 # Setup Atom and APM in GitHub actions
 
