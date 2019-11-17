@@ -3,20 +3,20 @@ const tc = require("@actions/tool-cache");
 const core = require("@actions/core");
 const exec = require("@actions/exec");
 
-function downloadAtom(channel) {
+function downloadAtom(channel, folder) {
 	switch (process.platform) {
 		case "win32":
-			return downloadOnWindows(channel);
+			return downloadOnWindows(channel, folder);
 		case "darwin":
-			return downloadOnMacos(channel);
+			return downloadOnMacos(channel, folder);
 		default:
-			return downloadOnLinux(channel);
+			return downloadOnLinux(channel, folder);
 	}
 }
 
-async function downloadOnWindows(channel) {
+async function downloadOnWindows(channel, folder) {
 	const downloadFile = await tc.downloadTool("https://atom.io/download/windows_zip?channel=" + channel);
-	const folder = await tc.extractZip(downloadFile, path.join(process.env.GITHUB_WORKSPACE, "atom"));
+	await tc.extractZip(downloadFile, folder);
 	let atomfolder = "Atom";
 	if (channel !== "stable") {
 		atomfolder += ` ${channel[0].toUpperCase() + channel.substring(1)}`;
@@ -24,9 +24,8 @@ async function downloadOnWindows(channel) {
 	return [path.join(folder, atomfolder, "resources", "cli")];
 }
 
-async function downloadOnMacos(channel) {
+async function downloadOnMacos(channel, folder) {
 	const downloadFile = await tc.downloadTool("https://atom.io/download/mac?channel=" + channel);
-	const folder = path.join(process.env.GITHUB_WORKSPACE, "atom");
 	await exec.exec("unzip", ["-q", downloadFile, "-d", folder]);
 	let atomfolder = "Atom";
 	if (channel !== "stable") {
@@ -39,9 +38,8 @@ async function downloadOnMacos(channel) {
 	return [atomPath, apmPath];
 }
 
-async function downloadOnLinux(channel) {
+async function downloadOnLinux(channel, folder) {
 	const downloadFile = await tc.downloadTool("https://atom.io/download/deb?channel=" + channel);
-	const folder = path.join(process.env.GITHUB_WORKSPACE, "atom");
 	await exec.exec("/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16");
 	await core.exportVariable("DISPLAY", ":99");
 	await exec.exec("dpkg-deb", ["-x", downloadFile, folder]);
@@ -54,15 +52,7 @@ async function downloadOnLinux(channel) {
 	return [atomPath, apmPath];
 }
 
-async function run() {
-	try {
-		const channel = core.getInput("channel", {required: true}).toLowerCase();
-		const paths = await downloadAtom(channel);
-		paths.forEach(p => core.addPath(p));
-	} catch (error) {
-		core.setFailed(`Atom download failed with error: ${error.message}`);
-	}
-}
-
-
-run();
+module.exports = downloadAtom;
+module.exports.windows = downloadOnWindows;
+module.exports.macos = downloadOnMacos;
+module.exports.linux = downloadOnLinux;
