@@ -1,10 +1,12 @@
-name: "Test and Lint"
+name: "Tests"
 on:
   pull_request:
   push:
     paths:
       - "!dist/**"
       - "!.github/**"
+      - .github/workflows/test.yml
+      - "!**.md"
     branches:
       - master
 
