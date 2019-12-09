@@ -4,8 +4,6 @@ on:
   push:
     paths:
       - "!dist/**"
-      - "!.github/**"
-      - .github/workflows/test.yml
       - "!**.md"
     branches:
       - master
