@@ -2,9 +2,8 @@ name: "Tests"
 on:
   pull_request:
   push:
-    paths:
-      - "!dist/**"
-      - "!**.md"
+    paths-ignore:
+      - dist/**
     branches:
       - master
 
