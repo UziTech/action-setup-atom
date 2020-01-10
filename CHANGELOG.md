@@ -1,3 +1,11 @@
+## [1.0.3](https://github.com/UziTech/action-setup-atom/compare/v1.0.2...v1.0.3) (2020-01-10)
+
+
+### Bug Fixes
+
+* use extractZip ([#3](https://github.com/UziTech/action-setup-atom/issues/3)) ([a19f3b0](https://github.com/UziTech/action-setup-atom/commit/a19f3b048d3407d1eae3336049fac221eaa0e5b2))
+* **deps:** update deps ([95cf466](https://github.com/UziTech/action-setup-atom/commit/95cf4669bdbeb96925f5a2fa6c7ab93b0c20d665))
+
 ## [1.0.2](https://github.com/UziTech/action-setup-atom/compare/v1.0.1...v1.0.2) (2019-12-09)
 
 
