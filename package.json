@@ -33,7 +33,7 @@
     "@actions/tool-cache": "^1.2.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "8.3.4",
+    "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
     "@semantic-release/changelog": "^3.0.6",
     "@semantic-release/commit-analyzer": "^7.0.0",
