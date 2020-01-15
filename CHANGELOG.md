@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/UziTech/action-setup-atom/compare/v1.0.3...v1.0.4) (2020-01-15)
+
+
+### Bug Fixes
+
+* add +extension RANDR to linux setup ([47eb29a](https://github.com/UziTech/action-setup-atom/commit/47eb29af22b18e770c0b69fa41deb87d9a88aa72))
+
 ## [1.0.3](https://github.com/UziTech/action-setup-atom/compare/v1.0.2...v1.0.3) (2020-01-10)
 
 
