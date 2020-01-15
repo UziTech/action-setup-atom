@@ -2940,7 +2940,7 @@ async function downloadOnMacos(channel, folder) {
 
 async function downloadOnLinux(channel, folder) {
 	const downloadFile = await tc.downloadTool("https://atom.io/download/deb?channel=" + channel);
-	await exec.exec("/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16");
+	await exec.exec("/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16 +extension RANDR");
 	await core.exportVariable("DISPLAY", ":99");
 	await exec.exec("dpkg-deb", ["-x", downloadFile, folder]);
 	let atomfolder = "atom";
