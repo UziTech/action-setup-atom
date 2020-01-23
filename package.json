@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/UziTech/action-setup-atom#readme",
   "dependencies": {
-    "@actions/core": "^1.2.1",
+    "@actions/core": "^1.2.2",
     "@actions/exec": "^1.0.3",
     "@actions/tool-cache": "^1.2.0"
   },
