@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/UziTech/action-setup-atom/compare/v1.0.4...v1.0.5) (2020-01-24)
+
+
+### Bug Fixes
+
+* **deps:** update deps ([b84f236](https://github.com/UziTech/action-setup-atom/commit/b84f2361b6781a60d4a2d6681d2e61a388d4f792))
+
 ## [1.0.4](https://github.com/UziTech/action-setup-atom/compare/v1.0.3...v1.0.4) (2020-01-15)
 
 
