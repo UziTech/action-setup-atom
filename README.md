@@ -7,7 +7,7 @@
 
 Downloads Atom and add `atom` and `apm` to the `PATH`
 
-This may be used as an [action](#GitHub-Action) in GitHub Actions or run with `npx setup-atom` as an [npm package](#npm-package) in GitHub Actions, Travis-CI, and AppVeyor. (It might work in other CI environments but it is only tested in those environments).
+This may be used as an [action](#github-action) in GitHub Actions or run with `npx setup-atom` as an [npm package](#npm-package) in GitHub Actions, Travis-CI, and AppVeyor. (It might work in other CI environments but it is only tested in those environments).
 
 ## GitHub Action
 
