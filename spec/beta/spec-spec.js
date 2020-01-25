@@ -2,6 +2,6 @@
 
 describe("atom", () => {
 	it("should be the correct channel", function () {
-		expect(atom.appVersion).toContain("beta");
+		expect(atom.getReleaseChannel()).toBe("beta");
 	});
 });
