@@ -1,5 +1,9 @@
 name: "Tests"
-on: [push, pull_request]
+on:
+  pull_request:
+  push:
+    branches:
+      - master
 
 jobs:
   Test-stable:
@@ -59,16 +63,17 @@ jobs:
       - name: NPM install
         run: npm ci
       - name: Build 🧱
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm run build
           if ! git diff --quiet -- dist ; then
             git config --global user.email "<>"
             git config --global user.name "GitHub Actions"
-            git commit -m 'chore(build): 🧱 build [skip ci]' -- dist
+            git commit -m 'chore(build): 🧱 build [skip ci]' --no-verify -- dist
           fi
-          npx semantic-release
+      - name: Realease 🎉
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
 
   Skip:
     if: contains(github.event.head_commit.message, '[skip ci]')
