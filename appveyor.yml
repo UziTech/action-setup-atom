@@ -14,6 +14,7 @@ build_script:
   - git diff --quiet
   - atom -v
   - apm -v
+  - atom --test spec/%ATOM_CHANNEL%
 
 branches:
   only:
