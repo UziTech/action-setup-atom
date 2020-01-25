@@ -2,12 +2,16 @@
   "name": "setup-atom",
   "version": "1.0.5",
   "description": "Setup Atom and APM",
-  "main": "src/download.js",
+  "main": "./src/setup-atom.js",
   "scripts": {
     "test": "npm run lint",
     "lint": "eslint .",
     "build": "ncc build src/action.js"
   },
+  "bin": "./src/action.js",
+  "files": [
+    "src/"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/UziTech/action-setup-atom.git"

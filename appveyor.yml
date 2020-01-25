@@ -1,0 +1,27 @@
+environment:
+  matrix:
+  - ATOM_CHANNEL: stable
+  - ATOM_CHANNEL: beta
+
+install:
+  - ps: Install-Product node lts
+  - npm ci
+
+before_build:
+  - node ./src/action.js %ATOM_CHANNEL%
+
+build_script:
+  - git diff --quiet
+  - atom -v
+  - apm -v
+
+branches:
+  only:
+    - master
+
+version: "{build}"
+platform: x64
+clone_depth: 3
+skip_tags: true
+test: off
+deploy: off
