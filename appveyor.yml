@@ -8,7 +8,7 @@ install:
   - npm ci
 
 before_build:
-  - node ./src/action.js %ATOM_CHANNEL%
+  - node ./src/test.js %ATOM_CHANNEL%
 
 build_script:
   - git diff --quiet

@@ -44,6 +44,12 @@ async function downloadAtom(channel, folder) {
 }
 
 async function addToPath(channel, folder) {
+	if (typeof channel !== "string") {
+		channel = "stable";
+	}
+	if (typeof folder !== "string") {
+		folder = path.resolve(process.env.RUNNER_TEMP, "./atom");
+	}
 	switch (process.platform) {
 		case "win32": {
 			let atomfolder = "Atom";

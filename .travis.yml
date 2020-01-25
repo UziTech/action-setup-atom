@@ -3,7 +3,7 @@ language: node_js
 node_js: lts/*
 
 before_script:
-  - node ./src/action.js ${ATOM_CHANNEL}
+  - node ./src/test.js ${ATOM_CHANNEL}
   - source ../env.sh
 
 script:

@@ -55,7 +55,7 @@ jobs:
     - name: NPM Install
       run: npm ci
     - name: Download Atom
-      run: node ./src/action.js
+      run: node ./src/test.js
     - name: Get Atom versions
       run: atom -v
     - name: Get APM versions
@@ -72,7 +72,7 @@ jobs:
     - name: NPM Install
       run: npm ci
     - name: Download Atom
-      run: node ./src/action.js "beta"
+      run: node ./src/test.js "beta"
     - name: Get Atom versions
       run: atom -v
     - name: Get APM versions
