@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 module.exports =
 /******/ (function(modules, runtime) { // webpackBootstrap
 /******/ 	"use strict";
@@ -2859,71 +2860,6 @@ module.exports = require("assert");
 
 /***/ }),
 
-/***/ 401:
-/***/ (function(module, __unusedexports, __webpack_require__) {
-
-const path = __webpack_require__(622);
-const tc = __webpack_require__(533);
-const core = __webpack_require__(470);
-const exec = __webpack_require__(986);
-
-function downloadAtom(channel, folder) {
-	switch (process.platform) {
-		case "win32":
-			return downloadOnWindows(channel, folder);
-		case "darwin":
-			return downloadOnMacos(channel, folder);
-		default:
-			return downloadOnLinux(channel, folder);
-	}
-}
-
-async function downloadOnWindows(channel, folder) {
-	const downloadFile = await tc.downloadTool("https://atom.io/download/windows_zip?channel=" + channel);
-	await tc.extractZip(downloadFile, folder);
-	let atomfolder = "Atom";
-	if (channel !== "stable") {
-		atomfolder += ` ${channel[0].toUpperCase() + channel.substring(1)}`;
-	}
-	return [path.join(folder, atomfolder, "resources", "cli")];
-}
-
-async function downloadOnMacos(channel, folder) {
-	const downloadFile = await tc.downloadTool("https://atom.io/download/mac?channel=" + channel);
-	await tc.extractZip(downloadFile, folder);
-	let atomfolder = "Atom";
-	if (channel !== "stable") {
-		atomfolder += ` ${channel[0].toUpperCase() + channel.substring(1)}`;
-	}
-	atomfolder += ".app";
-	const atomPath = path.join(folder, atomfolder, "Contents", "Resources", "app");
-	await exec.exec("ln", ["-s", path.join(atomPath, "atom.sh"), path.join(atomPath, "atom")]);
-	const apmPath = path.join(atomPath, "apm", "bin");
-	return [atomPath, apmPath];
-}
-
-async function downloadOnLinux(channel, folder) {
-	const downloadFile = await tc.downloadTool("https://atom.io/download/deb?channel=" + channel);
-	await exec.exec("/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16 +extension RANDR");
-	await core.exportVariable("DISPLAY", ":99");
-	await exec.exec("dpkg-deb", ["-x", downloadFile, folder]);
-	let atomfolder = "atom";
-	if (channel !== "stable") {
-		atomfolder += `-${channel}`;
-	}
-	const atomPath = path.join(folder, "usr", "share", atomfolder);
-	const apmPath = path.join(atomPath, "resources", "app", "apm", "bin");
-	return [atomPath, apmPath];
-}
-
-module.exports = downloadAtom;
-module.exports.windows = downloadOnWindows;
-module.exports.macos = downloadOnMacos;
-module.exports.linux = downloadOnLinux;
-
-
-/***/ }),
-
 /***/ 413:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
@@ -4429,21 +4365,164 @@ module.exports = require("url");
 
 /***/ }),
 
+/***/ 890:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+const path = __webpack_require__(622);
+if (!process.env.GITHUB_ACTIONS) {
+	if (process.env.USERPROFILE) {
+		process.env.RUNNER_TEMP = path.resolve(process.env.USERPROFILE, "./temp");
+	} else if (process.env.HOME) {
+		process.env.RUNNER_TEMP = path.resolve(process.env.HOME, "./temp");
+	} else {
+		process.env.RUNNER_TEMP = path.resolve("../temp");
+	}
+}
+const tc = __webpack_require__(533);
+const core = __webpack_require__(470);
+const {exec} = __webpack_require__(986);
+const {promisify} = __webpack_require__(669);
+const cp = __webpack_require__(129);
+const execAsync = promisify(cp.exec);
+const fs = __webpack_require__(747);
+const writeFileAsync = promisify(fs.writeFile);
+
+async function downloadAtom(channel, folder) {
+	if (typeof channel !== "string") {
+		channel = "stable";
+	}
+	if (typeof folder !== "string") {
+		folder = path.resolve(process.env.RUNNER_TEMP, "./atom");
+	}
+	switch (process.platform) {
+		case "win32": {
+			const downloadFile = await tc.downloadTool("https://atom.io/download/windows_zip?channel=" + channel);
+			await tc.extractZip(downloadFile, folder);
+			break;
+		}
+		case "darwin": {
+			const downloadFile = await tc.downloadTool("https://atom.io/download/mac?channel=" + channel);
+			await tc.extractZip(downloadFile, folder);
+			break;
+		}
+		default: {
+			const downloadFile = await tc.downloadTool("https://atom.io/download/deb?channel=" + channel);
+			await exec("dpkg-deb", ["-x", downloadFile, folder]);
+			break;
+		}
+	}
+}
+
+async function addToPath(channel, folder) {
+	switch (process.platform) {
+		case "win32": {
+			let atomfolder = "Atom";
+			if (channel !== "stable") {
+				atomfolder += ` ${channel[0].toUpperCase() + channel.substring(1)}`;
+			}
+			const atomPath = path.join(folder, atomfolder, "resources", "cli");
+			if (process.env.GITHUB_ACTIONS) {
+				core.addPath(atomPath);
+			} else {
+				await exec("powershell", ["-Command", [
+					`[Environment]::SetEnvironmentVariable("PATH", "${atomPath};" + $env:PATH, "Machine")`,
+					"Start-Sleep -s 10",
+					"Restart-Computer",
+					"Start-Sleep -s 10",
+				].join(";\n")]);
+			}
+			break;
+		}
+		case "darwin": {
+			let atomfolder = "Atom";
+			if (channel !== "stable") {
+				atomfolder += ` ${channel[0].toUpperCase() + channel.substring(1)}`;
+			}
+			atomfolder += ".app";
+			const atomPath = path.join(folder, atomfolder, "Contents", "Resources", "app");
+			await exec("ln", ["-s", path.join(atomPath, "atom.sh"), path.join(atomPath, "atom")]);
+			const apmPath = path.join(atomPath, "apm", "bin");
+			if (process.env.GITHUB_ACTIONS) {
+				core.addPath(atomPath);
+				core.addPath(apmPath);
+			} else {
+				await execAsync(`export "PATH=${atomPath}:${apmPath}:$PATH"`);
+				await writeFileAsync("../env.sh", [
+					"#! /bin/bash",
+					`export "PATH=${atomPath}:${apmPath}:$PATH"`,
+				].join("\n"), {mode: "777"});
+			}
+			break;
+		}
+		default: {
+			const display = ":99";
+			await exec(`/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- ${display} -ac -screen 0 1280x1024x16 +extension RANDR`);
+			let atomfolder = "atom";
+			if (channel !== "stable") {
+				atomfolder += `-${channel}`;
+			}
+			const atomPath = path.join(folder, "usr", "share", atomfolder);
+			const apmPath = path.join(atomPath, "resources", "app", "apm", "bin");
+			if (process.env.GITHUB_ACTIONS) {
+				await core.exportVariable("DISPLAY", display);
+				core.addPath(atomPath);
+				core.addPath(apmPath);
+			} else {
+				await execAsync(`export DISPLAY="${display}"`);
+				await execAsync(`export "PATH=${atomPath}:${apmPath}:$PATH"`);
+				await writeFileAsync("../env.sh", [
+					"#! /bin/bash",
+					`export DISPLAY="${display}"`,
+					`export "PATH=${atomPath}:${apmPath}:$PATH"`,
+				].join("\n"), {mode: "777"});
+			}
+			break;
+		}
+	}
+}
+
+module.exports = {
+	downloadAtom,
+	addToPath,
+};
+
+
+/***/ }),
+
 /***/ 928:
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
+
 const path = __webpack_require__(622);
+if (!process.env.GITHUB_ACTIONS) {
+	if (process.env.USERPROFILE) {
+		process.env.RUNNER_TEMP = path.resolve(process.env.USERPROFILE, "./temp");
+	} else if (process.env.HOME) {
+		process.env.RUNNER_TEMP = path.resolve(process.env.HOME, "./temp");
+	} else {
+		process.env.RUNNER_TEMP = path.resolve("../temp");
+	}
+}
 const core = __webpack_require__(470);
-const downloadAtom = __webpack_require__(401);
+const {downloadAtom, addToPath} = __webpack_require__(890);
 
 async function run() {
 	try {
-		const channel = core.getInput("channel", {required: true}).toLowerCase();
-		const folder = path.join(process.env.GITHUB_WORKSPACE, "atom");
-		const paths = await downloadAtom(channel, folder);
-		paths.forEach(p => core.addPath(p));
+		const channel = (process.env.GITHUB_ACTIONS && core.getInput("channel").toLowerCase()) || process.argv[2] || "stable";
+		const folder = path.resolve(process.env.RUNNER_TEMP, process.argv[3] || "./atom");
+		console.log("channel:", channel);
+		console.log("folder:", folder);
+
+		await downloadAtom(channel, folder);
+		await addToPath(channel, folder);
+
 	} catch (error) {
-		core.setFailed(error.message);
+		if (process.env.GITHUB_ACTIONS) {
+			core.setFailed(error.message);
+		} else {
+			console.error(error);
+			process.exit(1);
+		}
 	}
 }
 
