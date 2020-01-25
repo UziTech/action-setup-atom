@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/UziTech/action-setup-atom/compare/v1.0.5...v1.1.0) (2020-01-25)
+
+
+### Features
+
+* add npm package `setup-atom` ([8aeb087](https://github.com/UziTech/action-setup-atom/commit/8aeb087043f88ce52ea72ade9c4e3c0c6b0ecdb3))
+
 ## [1.0.5](https://github.com/UziTech/action-setup-atom/compare/v1.0.4...v1.0.5) (2020-01-24)
 
 
