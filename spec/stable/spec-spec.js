@@ -2,6 +2,6 @@
 
 describe("atom", () => {
 	it("should be the correct channel", function () {
-		expect(/^\d+\.\d+\.\d+$/.test(atom.appVersion)).toBe(true);
+		expect(atom.getReleaseChannel()).toBe("stable");
 	});
 });
