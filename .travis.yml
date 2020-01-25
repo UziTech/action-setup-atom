@@ -1,0 +1,36 @@
+language: node_js
+
+node_js: lts/*
+
+before_script:
+  - node ./src/action.js ${ATOM_CHANNEL}
+  - source ../env.sh
+
+script:
+  - git diff --quiet
+  - atom -v
+  - apm -v
+
+jobs:
+  include:
+    - stage: spec tests 👩🏽‍💻
+      os: linux
+      env: ATOM_CHANNEL=stable
+    - os: linux
+      env: ATOM_CHANNEL=beta
+    - os: osx
+      env: ATOM_CHANNEL=stable
+    - os: osx
+      env: ATOM_CHANNEL=beta
+
+notifications:
+  email:
+    on_success: never
+    on_failure: change
+
+branches:
+  only:
+    - master
+
+git:
+  depth: 3
