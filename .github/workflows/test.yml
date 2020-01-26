@@ -104,6 +104,14 @@ jobs:
       - uses: actions/checkout@v2
       - name: NPM install
         run: npm ci
+      - name: Build 🧱
+        run: |
+          npm run build
+          if ! git diff --quiet -- dist ; then
+            git config --global user.email "<>"
+            git config --global user.name "GitHub Actions"
+            git commit -m 'chore(build): 🧱 build [skip ci]' --no-verify -- dist
+          fi
       - name: Realease 🎉
         uses: cycjimmy/semantic-release-action@v2
         id: semantic_release
