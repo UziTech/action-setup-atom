@@ -113,10 +113,17 @@ jobs:
             git commit -m 'chore(build): 🧱 build [skip ci]' --no-verify -- dist
           fi
       - name: Realease 🎉
+        uses: cycjimmy/semantic-release-action@v2
+        id: semantic_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx semantic-release
+      - name: release v${{ steps.semantic_release.outputs.new_release_major_version }}
+        if: steps.semantic_release.outputs.new_release_published == 'true'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: v${{ steps.semantic_release.outputs.new_release_major_version }}
 
   Skip:
     if: contains(github.event.head_commit.message, '[skip ci]')
