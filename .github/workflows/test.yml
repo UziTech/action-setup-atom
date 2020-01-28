@@ -16,42 +16,43 @@ jobs:
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v2
-    - name: Install Dependencies
-      run: npm ci
-    - name: Build Action
-      if: matrix.source == 'action'
-      run: npm run build
-    - name: Install Atom with Action
-      if: matrix.source == 'action' && matrix.channel == 'stable'
-      uses: ./
-    - name: Install Atom Beta with Action
-      if: matrix.source == 'action' && matrix.channel == 'beta'
-      uses: ./
-      with:
-        channel: beta
-    - name: Install Atom with NPM
-      if: matrix.source == 'npm' && matrix.channel == 'stable'
-      run: node ./src/action.js
-    - name: Install Atom Beta with NPM
-      if: matrix.source == 'npm' && matrix.channel == 'beta'
-      run: node ./src/action.js beta
-    - name: Don't download to repo directory
-      run: git diff --name-only --exit-code -- ':(exclude)dist/index.js'
-    - name: Get Atom versions
-      run: atom -v
-    - name: Get APM versions
-      run: apm -v
-    - name: Run Specs
-      run: atom --test spec/${{ matrix.channel }}
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build Action
+        if: matrix.source == 'action'
+        run: npm run build
+      - name: Install Atom with Action
+        if: matrix.source == 'action' && matrix.channel == 'stable'
+        uses: ./
+      - name: Install Atom Beta with Action
+        if: matrix.source == 'action' && matrix.channel == 'beta'
+        uses: ./
+        with:
+          channel: beta
+      - name: Install Atom with NPM
+        if: matrix.source == 'npm' && matrix.channel == 'stable'
+        run: node ./src/action.js
+      - name: Install Atom Beta with NPM
+        if: matrix.source == 'npm' && matrix.channel == 'beta'
+        run: node ./src/action.js beta
+      - name: Don't download to repo directory
+        run: git diff --name-only --exit-code -- ':(exclude)dist/index.js'
+      - name: Get Atom versions
+        run: atom -v
+      - name: Get APM versions
+        run: apm -v
+      - name: Run Specs
+        run: atom --test spec/${{ matrix.channel }}
 
   Lint:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: NPM install
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Install Dependencies
         run: npm ci
       - name: Lint ✨
         run: npm run lint
@@ -61,8 +62,9 @@ jobs:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: NPM install
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Install Dependencies
         run: npm ci
       - name: Build 🧱
         run: |
