@@ -105,6 +105,7 @@ async function addToPath(channel, folder) {
 					`export DISPLAY="${display}"`,
 					`export "PATH=${atomPath}:${apmPath}:$PATH"`,
 				].join("\n"), {mode: "777"});
+				await execAsync("source ../env.sh");
 			}
 			break;
 		}
