@@ -6,89 +6,45 @@ on:
       - master
 
 jobs:
-  Test-stable:
+  Test:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        channel: [stable, beta]
+        source: [action, npm]
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v2
-    - name: NPM Install
+    - name: Checkout Code
+      uses: actions/checkout@v2
+    - name: Install Dependencies
       run: npm ci
-    - name: Build
+    - name: Build Action
+      if: matrix.source == 'action'
       run: npm run build
-    - uses: ./
-    - name: Get Atom versions
-      run: atom -v
-    - name: Get APM versions
-      run: apm -v
-    - name: Run Specs
-      run: atom --test spec/stable
-
-  Test-beta:
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-      fail-fast: false
-    runs-on: ${{ matrix.os }}
-    steps:
-    - uses: actions/checkout@v2
-    - name: NPM Install
-      run: npm ci
-    - name: Build
-      run: npm run build
-    - uses: ./
+    - name: Install Atom with Action
+      if: matrix.source == 'action' && matrix.channel == 'stable'
+      uses: ./
+    - name: Install Atom Beta with Action
+      if: matrix.source == 'action' && matrix.channel == 'beta'
+      uses: ./
       with:
         channel: beta
-    - name: Get Atom versions
-      run: atom -v
-    - name: Get APM versions
-      run: apm -v
-    - name: Run Specs
-      run: atom --test spec/beta
-
-  Test-npm-stable:
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-      fail-fast: false
-    runs-on: ${{ matrix.os }}
-    steps:
-    - uses: actions/checkout@v2
-    - name: NPM Install
-      run: npm ci
-    - name: Download Atom
+    - name: Install Atom with NPM
+      if: matrix.source == 'npm' && matrix.channel == 'stable'
       run: node ./src/action.js
+    - name: Install Atom Beta with NPM
+      if: matrix.source == 'npm' && matrix.channel == 'beta'
+      run: node ./src/action.js beta
+    - name: Don't download to repo directory
+      run: git diff --name-only --exit-code -- ':(exclude)dist/index.js'
     - name: Get Atom versions
       run: atom -v
     - name: Get APM versions
       run: apm -v
     - name: Run Specs
-      run: atom --test spec/stable
-
-  Test-npm-beta:
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-      fail-fast: false
-    runs-on: ${{ matrix.os }}
-    steps:
-    - uses: actions/checkout@v2
-    - name: NPM Install
-      run: npm ci
-    - name: Download Atom
-      run: node ./src/action.js "beta"
-    - name: Get Atom versions
-      run: atom -v
-    - name: Get APM versions
-      run: apm -v
-    - name: Run Specs
-      run: atom --test spec/beta
+      run: atom --test spec/${{ matrix.channel }}
 
   Lint:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
@@ -101,7 +57,7 @@ jobs:
         run: npm run lint
 
   Release:
-    needs: [Test-stable, Test-beta, Test-npm-stable, Test-npm-beta, Lint]
+    needs: [Test, Lint]
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
