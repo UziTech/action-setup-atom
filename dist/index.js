@@ -3071,6 +3071,13 @@ exports.setFailed = setFailed;
 // Logging Commands
 //-----------------------------------------------------------------------
 /**
+ * Gets whether Actions Step Debug is on or not
+ */
+function isDebug() {
+    return process.env['RUNNER_DEBUG'] === '1';
+}
+exports.isDebug = isDebug;
+/**
  * Writes debug message to user log
  * @param message debug message
  */
@@ -4396,17 +4403,17 @@ async function downloadAtom(channel, folder) {
 	}
 	switch (process.platform) {
 		case "win32": {
-			const downloadFile = await tc.downloadTool("https://atom.io/download/windows_zip?channel=" + channel);
+			const downloadFile = await tc.downloadTool(`https://atom.io/download/windows_zip?channel=${channel}`);
 			await tc.extractZip(downloadFile, folder);
 			break;
 		}
 		case "darwin": {
-			const downloadFile = await tc.downloadTool("https://atom.io/download/mac?channel=" + channel);
+			const downloadFile = await tc.downloadTool(`https://atom.io/download/mac?channel=${channel}`);
 			await tc.extractZip(downloadFile, folder);
 			break;
 		}
 		default: {
-			const downloadFile = await tc.downloadTool("https://atom.io/download/deb?channel=" + channel);
+			const downloadFile = await tc.downloadTool(`https://atom.io/download/deb?channel=${channel}`);
 			await exec("dpkg-deb", ["-x", downloadFile, folder]);
 			break;
 		}
