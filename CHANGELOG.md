@@ -1,3 +1,10 @@
+## [1.1.6](https://github.com/UziTech/action-setup-atom/compare/v1.1.5...v1.1.6) (2020-05-01)
+
+
+### Bug Fixes
+
+* **release:** fix release ([60e5005](https://github.com/UziTech/action-setup-atom/commit/60e5005dee1c9bb903eebab6ea13b80f68e906db))
+
 ## [1.1.5](https://github.com/UziTech/action-setup-atom/compare/v1.1.4...v1.1.5) (2020-04-30)
 
 
