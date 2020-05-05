@@ -37,6 +37,8 @@ async function downloadAtom(channel, folder) {
 		}
 		default: {
 			const downloadFile = await tc.downloadTool(`https://atom.io/download/deb?channel=${channel}`);
+			await exec("sudo apt-get update");
+			await exec("sudo apt-get install -yyq libgconf-2-4 build-essential git libsecret-1-dev gvfs-bin");
 			await exec("dpkg-deb", ["-x", downloadFile, folder]);
 			break;
 		}
