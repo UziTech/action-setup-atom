@@ -1,3 +1,10 @@
+## [1.1.7](https://github.com/UziTech/action-setup-atom/compare/v1.1.6...v1.1.7) (2020-05-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/tool-cache to ^1.3.5 ([5a07e49](https://github.com/UziTech/action-setup-atom/commit/5a07e49e6a7f4bb9af488b95df2226b4dbc6431b))
+
 ## [1.1.6](https://github.com/UziTech/action-setup-atom/compare/v1.1.5...v1.1.6) (2020-05-01)
 
 
