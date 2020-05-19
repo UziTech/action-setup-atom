@@ -1,8 +1,8 @@
 module.exports = {
 	env: {
-		jasmine: true
+		jasmine: true,
 	},
 	globals: {
-		atom: false
+		atom: false,
 	},
 };
