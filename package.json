@@ -47,6 +47,6 @@
     "@zeit/ncc": "^0.22.3",
     "eslint": "^7.3.0",
     "husky": "^4.2.5",
-    "semantic-release": "^17.0.8"
+    "semantic-release": "^17.1.0"
   }
 }
