@@ -1,3 +1,10 @@
+## [1.1.10](https://github.com/UziTech/action-setup-atom/compare/v1.1.9...v1.1.10) (2020-08-26)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/core to ^1.2.5 ([1317050](https://github.com/UziTech/action-setup-atom/commit/1317050b255c041815e478825e54f6b93c7b5121))
+
 ## [1.1.9](https://github.com/UziTech/action-setup-atom/compare/v1.1.8...v1.1.9) (2020-07-16)
 
 
