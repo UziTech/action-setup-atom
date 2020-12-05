@@ -46,7 +46,7 @@
     "@semantic-release/release-notes-generator": "^9.0.1",
     "@zeit/ncc": "^0.22.3",
     "eslint": "^7.15.0",
-    "husky": "^4.3.0",
+    "husky": "^4.3.4",
     "semantic-release": "^17.3.0"
   }
 }
