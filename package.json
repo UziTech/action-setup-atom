@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run lint",
     "lint": "eslint .",
-    "build": "ncc build src/action.js"
+    "build": "ncc build src/action.js --source-map --minify"
   },
   "bin": "./src/action.js",
   "files": [
