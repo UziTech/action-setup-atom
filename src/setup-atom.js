@@ -17,7 +17,7 @@ const execAsync = promisify(cp.exec);
 const fs = require("fs");
 const writeFileAsync = promisify(fs.writeFile);
 
-async function downloadAtom(channel, folder) {
+async function downloadAtom(channel, folder, isSnap) {
 	if (typeof channel !== "string") {
 		channel = "stable";
 	}
@@ -36,8 +36,12 @@ async function downloadAtom(channel, folder) {
 			break;
 		}
 		default: {
-			const downloadFile = await tc.downloadTool(`https://atom.io/download/deb?channel=${channel}`);
-			await exec("dpkg-deb", ["-x", downloadFile, folder]);
+			if (!isSnap) {
+				const downloadFile = await tc.downloadTool(`https://atom.io/download/deb?channel=${channel}`);
+				await exec("dpkg-deb", ["-x", downloadFile, folder]);
+			} else {
+				await execAsync(`sudo snap install atom --${channel} --classic`);
+			}
 			break;
 		}
 	}

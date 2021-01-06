@@ -5,6 +5,10 @@ inputs:
     description: 'Channel'
     required: true
     default: 'Stable'
+  snap:
+    description: 'Install Atom using Snap'
+    required: false
+    default: false
 runs:
   using: 'node12'
   main: 'dist/index.js'

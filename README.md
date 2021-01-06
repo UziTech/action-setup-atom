@@ -16,6 +16,10 @@ This may be used as an [action](#github-action) in GitHub Actions or run with `n
 
 The channel to test. Default `"stable"`.
 
+### `snap`
+
+If should install using snap (only on Linux). Default `"false"`
+
 ### Example usage
 
 ```yml
