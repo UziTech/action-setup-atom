@@ -115,7 +115,11 @@ async function addToPath(channel, folder) {
 }
 
 async function printVersions() {
-	core.info((await execAsync(`${apmPath !== undefined ? path.join(apmPath, "apm") : "apm"} -v`)).stdout);
+	try {
+		core.info((await execAsync(`${apmPath !== undefined ? path.join(apmPath, "apm") : "apm"} -v`)).stdout);
+	} catch(e) {
+		// ignore the error
+	}
 }
 
 module.exports = {
