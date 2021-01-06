@@ -16,11 +16,11 @@ jobs:
       include:
         - os: ubuntu-latest
           channel: stable
-          snap: true
+          packageManager: 'snap'
           source: action
         - os: ubuntu-latest
           channel: edge
-          snap: true
+          packageManager: 'snap'
           source: action
       fail-fast: false
     runs-on: ${{ matrix.os }}

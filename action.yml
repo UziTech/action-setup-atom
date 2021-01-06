@@ -5,10 +5,10 @@ inputs:
     description: 'Channel'
     required: true
     default: 'Stable'
-  snap:
-    description: 'Install Atom using Snap'
+  packageManager:
+    description: 'If provided, this package manager will be used to install Atom instead of downloading the official releases.'
     required: false
-    default: false
+    default: ''
 runs:
   using: 'node12'
   main: 'dist/index.js'

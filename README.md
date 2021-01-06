@@ -16,9 +16,9 @@ This may be used as an [action](#github-action) in GitHub Actions or run with `n
 
 The channel to test. Default `"stable"`.
 
-### `snap`
+### `packageManager`
 
-If should install using snap (only on Linux). Default `"false"`
+If provided, this package manager will be used to install Atom instead of downloading the official releases.
 
 ### Example usage
 
