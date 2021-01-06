@@ -42,11 +42,15 @@ async function downloadAtom(channel, folder, packageManager) {
 			} else if (packageManager === "snap") {
 				await execAsync(`sudo snap install atom --${channel} --classic`);
 			} else {
-				core.error(`packageManager ${packageManager} is not supported`);
+				errorPackageManager(packageManager);
 			}
 			break;
 		}
 	}
+}
+
+function errorPackageManager(packageManager) {
+	core.error(`packageManager ${packageManager} is not supported on ${process.platform}`);
 }
 
 async function addToPath(channel, folder) {
