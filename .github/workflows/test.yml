@@ -13,6 +13,15 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         channel: [stable, beta]
         source: [action, npm]
+      include:
+        - os: ubuntu-latest
+          channel: stable
+          snap: true
+          source: action
+        - os: ubuntu-latest
+          channel: edge
+          snap: true
+          source: action
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
