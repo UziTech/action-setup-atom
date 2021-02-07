@@ -1,6 +1,7 @@
 [![GitHub Actions Status](https://github.com/UziTech/action-setup-atom/workflows/Tests/badge.svg?branch=master)](https://github.com/UziTech/action-setup-atom/actions)
 [![Travis-CI Status](https://travis-ci.com/UziTech/action-setup-atom.svg?branch=master)](https://travis-ci.com/UziTech/action-setup-atom)
 [![AppVeyor Status](https://ci.appveyor.com/api/projects/status/b1jl4lp0ud99byfc/branch/master?svg=true)](https://ci.appveyor.com/project/UziTech/action-setup-atom/branch/master)
+![CI](https://github.com/kadirselcuk/action-setup-atom/workflows/CI/badge.svg)
 
 # Setup Atom and APM
 
