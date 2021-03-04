@@ -21,8 +21,8 @@ async function run() {
 		core.info(`folder: ${folder}`);
 
 		await downloadAtom(channel, folder);
-		await addToPath(channel, folder);
-		await printVersions();
+		const apmPath = await addToPath(channel, folder);
+		await printVersions(apmPath);
 
 	} catch (error) {
 		if (process.env.GITHUB_ACTIONS) {

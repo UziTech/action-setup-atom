@@ -43,10 +43,9 @@ async function downloadAtom(channel, folder) {
 	}
 }
 
-// used in addToPath and printVersions
-let apmPath;
 
 async function addToPath(channel, folder) {
+	let apmPath;
 	switch (process.platform) {
 		case "win32": {
 			let atomfolder = "Atom";
@@ -112,9 +111,10 @@ async function addToPath(channel, folder) {
 			break;
 		}
 	}
+	return apmPath;
 }
 
-async function printVersions() {
+async function printVersions(apmPath) {
 	try {
 		core.info((await execAsync(`${apmPath !== undefined ? path.join(apmPath, "apm") : "apm"} -v`)).stdout);
 	} catch(e) {
