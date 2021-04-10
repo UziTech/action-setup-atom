@@ -1,3 +1,10 @@
+## [1.1.13](https://github.com/UziTech/action-setup-atom/compare/v1.1.12...v1.1.13) (2021-04-10)
+
+
+### Bug Fixes
+
+* print versions ([#192](https://github.com/UziTech/action-setup-atom/issues/192)) ([ba29773](https://github.com/UziTech/action-setup-atom/commit/ba29773411dedb449d4314fe907e9998856b732f))
+
 ## [1.1.12](https://github.com/UziTech/action-setup-atom/compare/v1.1.11...v1.1.12) (2020-11-14)
 
 
