@@ -11,7 +11,11 @@ if (!process.env.GITHUB_ACTIONS) {
 	}
 }
 const core = require("@actions/core");
-const {downloadAtom, addToPath} = require("./setup-atom.js");
+const {
+	downloadAtom,
+	addToPath,
+	printVersions,
+} = require("./setup-atom.js");
 
 async function run() {
 	try {
@@ -22,6 +26,7 @@ async function run() {
 
 		await downloadAtom(channel, folder);
 		await addToPath(channel, folder);
+		await printVersions();
 
 	} catch (error) {
 		if (process.env.GITHUB_ACTIONS) {
