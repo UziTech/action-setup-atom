@@ -111,7 +111,17 @@ async function addToPath(channel, folder) {
 	}
 }
 
+async function printVersions() {
+	try {
+		core.info((await execAsync("atom -v")).stdout);
+		core.info((await execAsync("apm -v")).stdout);
+	} catch(e) {
+		core.info("Error printing versions:", e);
+	}
+}
+
 module.exports = {
 	downloadAtom,
 	addToPath,
+	printVersions,
 };
