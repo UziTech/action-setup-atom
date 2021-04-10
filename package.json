@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npm run lint",
     "lint": "eslint .",
-    "build": "ncc build src/action.js"
+    "build": "ncc build src/action.js",
+    "prepare": "husky install"
   },
   "bin": "./src/action.js",
   "files": [
@@ -46,7 +47,7 @@
     "@semantic-release/release-notes-generator": "^9.0.2",
     "@vercel/ncc": "^0.28.0",
     "eslint": "^7.24.0",
-    "husky": "^4.3.8",
+    "husky": "^6.0.0",
     "semantic-release": "^17.4.2"
   }
 }
