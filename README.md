@@ -16,7 +16,7 @@ This may be used as an [action](#github-action) in GitHub Actions or run with `n
 
 The version to test. Default `stable`.
 
-Possible values:  `stable`, `beta`, `nightly`, `dev`, Any Atom [release](https://github.com/atom/atom/releases) tag (e.g. `v1.50.0` or `v1.50.0-beta0`)
+Possible values:  `stable`, `beta`, `nightly`, `dev`, Any Atom [release](https://github.com/atom/atom/releases) tag >= `v1.0.0` (e.g. `v1.50.0` or `v1.50.0-beta0`)
 
 ### Example usage
 
