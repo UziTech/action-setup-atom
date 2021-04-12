@@ -12,16 +12,18 @@ This may be used as an [action](#github-action) in GitHub Actions or run with `n
 
 ### Inputs
 
-#### `channel`
+#### `version`
 
-The channel to test. Default `"stable"`.
+The version to test. Default `stable`.
+
+Possible values:  `stable`, `beta`, `nightly`, `dev`, Any Atom [release](https://github.com/atom/atom/releases) tag (e.g. `v1.50.0` or `v1.50.0-beta0`)
 
 ### Example usage
 
 ```yml
 uses: UziTech/action-setup-atom@v1
 with:
-  channel: 'beta'
+  version: 'beta'
 ```
 
 ### Full Example
@@ -34,13 +36,13 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        channel: [stable, beta]
+        version: [stable, beta]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
     - uses: UziTech/action-setup-atom@v1
       with:
-        channel: ${{ matrix.channel }}
+        version: ${{ matrix.version }}
     - name: Atom version
       run: atom -v
     - name: APM version
@@ -53,7 +55,7 @@ jobs:
 
 ## npm package
 
-`npx setup-atom [ATOM_CHANNEL] [DOWNLOAD_FOLDER]`
+`npx setup-atom [ATOM_VERSION] [DOWNLOAD_FOLDER]`
 
 ### Examples
 
@@ -65,12 +67,12 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        channel: [stable, beta]
+        version: [stable, beta]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
     - name: Download Atom
-    - run: npx setup-atom ${{ matrix.channel }}
+    - run: npx setup-atom ${{ matrix.version }}
     - name: Atom version
       run: atom -v
     - name: APM version
@@ -89,12 +91,10 @@ see https://github.com/travis-ci/travis-ci/issues/7472
 
 ```yml
 before_script:
-  - npx setup-atom ${ATOM_CHANNEL}
+  - npx setup-atom ${ATOM_VERSION}
   - source ../env.sh # This is needed to persist the PATH between steps
 
 script:
-  - atom -v
-  - apm -v
   - apm ci
   - atom --test spec
 
@@ -102,13 +102,13 @@ jobs:
   include:
     - stage: spec tests 👩🏽‍💻
       os: linux
-      env: ATOM_CHANNEL=stable
+      env: ATOM_VERSION=stable
     - os: linux
-      env: ATOM_CHANNEL=beta
+      env: ATOM_VERSION=beta
     - os: osx
-      env: ATOM_CHANNEL=stable
+      env: ATOM_VERSION=stable
     - os: osx
-      env: ATOM_CHANNEL=beta
+      env: ATOM_VERSION=beta
 ```
 
 #### AppVeyor
@@ -116,19 +116,17 @@ jobs:
 ```yml
 environment:
   matrix:
-  - ATOM_CHANNEL: stable
-  - ATOM_CHANNEL: beta
+  - ATOM_VERSION: stable
+  - ATOM_VERSION: beta
 
 install:
   - ps: Install-Product node lts
   - npm ci
 
 before_build:
-  - npx setup-atom %ATOM_CHANNEL%
+  - npx setup-atom %ATOM_VERSION%
 
 build_script:
-  - atom -v
-  - apm -v
   - apm ci
   - atom --test spec
 ```
