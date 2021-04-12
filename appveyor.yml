@@ -1,20 +1,22 @@
 environment:
   matrix:
-  - ATOM_CHANNEL: stable
-  - ATOM_CHANNEL: beta
+  - ATOM_VERSION: stable
+  - ATOM_VERSION: beta
+  - ATOM_VERSION: v1.50.0
+  - ATOM_VERSION: v1.50.0-beta0
 
 install:
   - ps: Install-Product node lts
   - npm ci
 
 before_build:
-  - node ./src/action.js %ATOM_CHANNEL%
+  - node ./src/action.js %ATOM_VERSION%
 
 build_script:
   - git diff --quiet
   - atom -v
   - apm -v
-  - atom --test spec/%ATOM_CHANNEL%
+  - atom --test spec/%ATOM_VERSION%
 
 branches:
   only:
