@@ -3,26 +3,34 @@ language: node_js
 node_js: lts/*
 
 before_script:
-  - node ./src/action.js ${ATOM_CHANNEL}
+  - node ./src/action.js ${ATOM_VERSION}
   - source ../env.sh
 
 script:
   - git diff --quiet
   - atom -v
   - apm -v
-  - atom --test spec/${ATOM_CHANNEL}
+  - atom --test spec/${ATOM_VERSION}
 
 jobs:
   include:
     - stage: spec tests 👩🏽‍💻
       os: linux
-      env: ATOM_CHANNEL=stable
+      env: ATOM_VERSION=stable
     - os: linux
-      env: ATOM_CHANNEL=beta
+      env: ATOM_VERSION=beta
+    - os: linux
+      env: ATOM_VERSION=v1.50.0
+    - os: linux
+      env: ATOM_VERSION=v1.50.0-beta0
     - os: osx
-      env: ATOM_CHANNEL=stable
+      env: ATOM_VERSION=stable
     - os: osx
-      env: ATOM_CHANNEL=beta
+      env: ATOM_VERSION=beta
+    - os: osx
+      env: ATOM_VERSION=v1.50.0
+    - os: osx
+      env: ATOM_VERSION=v1.50.0-beta0
 
 notifications:
   email:

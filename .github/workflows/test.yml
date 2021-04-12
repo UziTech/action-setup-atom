@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        channel: [stable, beta]
+        version: [stable, beta, v1.50.0, v1.50.0-beta0]
         source: [action, npm]
       fail-fast: false
     runs-on: ${{ matrix.os }}
@@ -24,27 +24,23 @@ jobs:
         if: matrix.source == 'action'
         run: npm run build
       - name: Install Atom with Action
-        if: matrix.source == 'action' && matrix.channel == 'stable'
+        if: matrix.source == 'action' && matrix.version == 'stable'
         uses: ./
-      - name: Install Atom Beta with Action
-        if: matrix.source == 'action' && matrix.channel == 'beta'
+      - name: Install Atom ${{ matrix.version }} with Action
+        if: matrix.source == 'action' && matrix.version != 'stable'
         uses: ./
         with:
-          channel: beta
+          version: ${{ matrix.version }}
       - name: Install Atom with NPM
-        if: matrix.source == 'npm' && matrix.channel == 'stable'
+        if: matrix.source == 'npm' && matrix.version == 'stable'
         run: node ./src/action.js
-      - name: Install Atom Beta with NPM
-        if: matrix.source == 'npm' && matrix.channel == 'beta'
-        run: node ./src/action.js beta
+      - name: Install Atom ${{ matrix.version }} with NPM
+        if: matrix.source == 'npm' && matrix.version != 'stable'
+        run: node ./src/action.js ${{ matrix.version }}
       - name: Don't download to repo directory
         run: git diff --name-only --exit-code -- ':(exclude)dist/index.js'
-      - name: Get Atom versions
-        run: atom -v
-      - name: Get APM versions
-        run: apm -v
       - name: Run Specs
-        run: atom --test spec/${{ matrix.channel }}
+        run: atom --test spec/${{ matrix.version }}
 
   Lint:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"

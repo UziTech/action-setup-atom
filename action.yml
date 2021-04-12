@@ -1,8 +1,8 @@
 name: 'Setup Atom'
 description: 'Setup Atom and APM'
 inputs:
-  channel:
-    description: 'Channel'
+  version:
+    description: 'Version'
     required: true
     default: 'Stable'
 runs:
