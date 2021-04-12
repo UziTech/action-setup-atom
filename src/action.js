@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const path = require("path");
 if (!process.env.GITHUB_ACTIONS) {
 	if (process.env.USERPROFILE) {
