@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-module.exports =
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -4931,57 +4929,6 @@ module.exports = v4;
 
 /***/ }),
 
-/***/ 348:
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __nccwpck_require__) => {
-
-
-const path = __nccwpck_require__(622);
-if (!process.env.GITHUB_ACTIONS) {
-	if (process.env.USERPROFILE) {
-		process.env.RUNNER_TEMP = path.resolve(process.env.USERPROFILE, "./temp");
-	} else if (process.env.HOME) {
-		process.env.RUNNER_TEMP = path.resolve(process.env.HOME, "./temp");
-	} else {
-		process.env.RUNNER_TEMP = path.resolve("../temp");
-	}
-}
-const core = __nccwpck_require__(186);
-const {
-	downloadAtom,
-	addToPath,
-	printVersions,
-} = __nccwpck_require__(94);
-
-async function run() {
-	try {
-		const channel = (process.env.GITHUB_ACTIONS && core.getInput("channel").toLowerCase());
-		if (channel) {
-			core.error("'channel' is deprecated. Please use 'version' instead.");
-		}
-		const version = channel || (process.env.GITHUB_ACTIONS && core.getInput("version").toLowerCase()) || process.argv[2] || "stable";
-		const folder = path.resolve(process.env.RUNNER_TEMP, process.argv[3] || "./atom");
-		console.log("version:", version);
-		console.log("folder:", folder);
-
-		await downloadAtom(version, folder);
-		await addToPath(version, folder);
-		await printVersions();
-
-	} catch (error) {
-		if (process.env.GITHUB_ACTIONS) {
-			core.setFailed(error.message);
-		} else {
-			console.error(error);
-			process.exit(1);
-		}
-	}
-}
-
-run();
-
-
-/***/ }),
-
 /***/ 94:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -5259,8 +5206,9 @@ module.exports = require("util");;
 /******/ 	// The require function
 /******/ 	function __nccwpck_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -5285,10 +5233,56 @@ module.exports = require("util");;
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
-/******/ 	__nccwpck_require__.ab = __dirname + "/";/************************************************************************/
-/******/ 	// module exports must be returned from runtime so entry inlining is disabled
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	return __nccwpck_require__(348);
+/******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+const path = __nccwpck_require__(622);
+if (!process.env.GITHUB_ACTIONS) {
+	if (process.env.USERPROFILE) {
+		process.env.RUNNER_TEMP = path.resolve(process.env.USERPROFILE, "./temp");
+	} else if (process.env.HOME) {
+		process.env.RUNNER_TEMP = path.resolve(process.env.HOME, "./temp");
+	} else {
+		process.env.RUNNER_TEMP = path.resolve("../temp");
+	}
+}
+const core = __nccwpck_require__(186);
+const {
+	downloadAtom,
+	addToPath,
+	printVersions,
+} = __nccwpck_require__(94);
+
+async function run() {
+	try {
+		const channel = (process.env.GITHUB_ACTIONS && core.getInput("channel").toLowerCase());
+		if (channel) {
+			core.error("'channel' is deprecated. Please use 'version' instead.");
+		}
+		const version = channel || (process.env.GITHUB_ACTIONS && core.getInput("version").toLowerCase()) || process.argv[2] || "stable";
+		const folder = path.resolve(process.env.RUNNER_TEMP, process.argv[3] || "./atom");
+		console.log("version:", version);
+		console.log("folder:", folder);
+
+		await downloadAtom(version, folder);
+		await addToPath(version, folder);
+		await printVersions();
+
+	} catch (error) {
+		if (process.env.GITHUB_ACTIONS) {
+			core.setFailed(error.message);
+		} else {
+			console.error(error);
+			process.exit(1);
+		}
+	}
+}
+
+run();
+
+})();
+
+module.exports = __webpack_exports__;
 /******/ })()
 ;
