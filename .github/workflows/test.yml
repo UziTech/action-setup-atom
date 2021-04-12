@@ -65,6 +65,7 @@ jobs:
       - name: Build 🧱
         run: |
           npm run build
+          git add dist
           if ! git diff --quiet -- dist ; then
             git config --global user.email "<>"
             git config --global user.name "GitHub Actions"
