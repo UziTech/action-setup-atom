@@ -19,13 +19,17 @@ const {
 
 async function run() {
 	try {
-		const channel = (process.env.GITHUB_ACTIONS && core.getInput("channel").toLowerCase()) || process.argv[2] || "stable";
+		const channel = (process.env.GITHUB_ACTIONS && core.getInput("channel").toLowerCase());
+		if (channel) {
+			core.error("'channel' is deprecated. Please use 'version' instead.");
+		}
+		const version = channel || (process.env.GITHUB_ACTIONS && core.getInput("version").toLowerCase()) || process.argv[2] || "stable";
 		const folder = path.resolve(process.env.RUNNER_TEMP, process.argv[3] || "./atom");
-		console.log("channel:", channel);
+		console.log("version:", version);
 		console.log("folder:", folder);
 
-		await downloadAtom(channel, folder);
-		await addToPath(channel, folder);
+		await downloadAtom(version, folder);
+		await addToPath(version, folder);
 		await printVersions();
 
 	} catch (error) {
