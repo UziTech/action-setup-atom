@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/UziTech/action-setup-atom/compare/v2.0.0...v2.0.1) (2021-04-12)
+
+
+### Bug Fixes
+
+* remove shebang ([d845cc6](https://github.com/UziTech/action-setup-atom/commit/d845cc6906c86d8895046c20c960f626b2365067))
+
 # [2.0.0](https://github.com/UziTech/action-setup-atom/compare/v1.1.13...v2.0.0) (2021-04-12)
 
 
