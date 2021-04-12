@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/UziTech/action-setup-atom/compare/v1.1.13...v2.0.0) (2021-04-12)
+
+
+### Features
+
+* allow selecting specific version ([5224667](https://github.com/UziTech/action-setup-atom/commit/52246677edfc71493daa4336c9c4f0f6b5dbebf7))
+
+
+### BREAKING CHANGES
+
+* deprecate `channel` use `version` instead.
+
 ## [1.1.13](https://github.com/UziTech/action-setup-atom/compare/v1.1.12...v1.1.13) (2021-04-10)
 
 
