@@ -4954,13 +4954,17 @@ const {
 
 async function run() {
 	try {
-		const channel = (process.env.GITHUB_ACTIONS && core.getInput("channel").toLowerCase()) || process.argv[2] || "stable";
+		const channel = (process.env.GITHUB_ACTIONS && core.getInput("channel").toLowerCase());
+		if (channel) {
+			core.error("'channel' is deprecated. Please use 'version' instead.");
+		}
+		const version = channel || (process.env.GITHUB_ACTIONS && core.getInput("version").toLowerCase()) || process.argv[2] || "stable";
 		const folder = path.resolve(process.env.RUNNER_TEMP, process.argv[3] || "./atom");
-		console.log("channel:", channel);
+		console.log("version:", version);
 		console.log("folder:", folder);
 
-		await downloadAtom(channel, folder);
-		await addToPath(channel, folder);
+		await downloadAtom(version, folder);
+		await addToPath(version, folder);
 		await printVersions();
 
 	} catch (error) {
@@ -5000,38 +5004,65 @@ const execAsync = promisify(cp.exec);
 const fs = __nccwpck_require__(747);
 const writeFileAsync = promisify(fs.writeFile);
 
-async function downloadAtom(channel, folder) {
-	if (typeof channel !== "string") {
-		channel = "stable";
+const CHANNELS = [
+	"stable",
+	"beta",
+	"nightly",
+	"dev",
+];
+
+async function downloadAtom(version, folder) {
+	if (typeof version !== "string") {
+		version = "stable";
 	}
 	if (typeof folder !== "string") {
 		folder = path.resolve(process.env.RUNNER_TEMP, "./atom");
 	}
 	switch (process.platform) {
 		case "win32": {
-			const downloadFile = await tc.downloadTool(`https://atom.io/download/windows_zip?channel=${channel}`);
+			let downloadFile;
+			if (CHANNELS.includes(version)) {
+				downloadFile = await tc.downloadTool(`https://atom.io/download/windows_zip?channel=${version}`);
+			} else {
+				// atom-windows.zip
+				downloadFile = await tc.downloadTool(`https://github.com/atom/atom/releases/download/${version}/atom-windows.zip`);
+			}
 			await tc.extractZip(downloadFile, folder);
 			break;
 		}
 		case "darwin": {
-			const downloadFile = await tc.downloadTool(`https://atom.io/download/mac?channel=${channel}`);
+			let downloadFile;
+			if (CHANNELS.includes(version)) {
+				downloadFile = await tc.downloadTool(`https://atom.io/download/mac?channel=${version}`);
+			} else {
+				// atom-mac.zip
+				downloadFile = await tc.downloadTool(`https://github.com/atom/atom/releases/download/${version}/atom-mac.zip`);
+			}
 			await tc.extractZip(downloadFile, folder);
 			break;
 		}
 		default: {
-			const downloadFile = await tc.downloadTool(`https://atom.io/download/deb?channel=${channel}`);
+			let downloadFile;
+			if (CHANNELS.includes(version)) {
+				downloadFile = await tc.downloadTool(`https://atom.io/download/deb?channel=${version}`);
+			} else {
+				// atom-amd64.deb
+				downloadFile = await tc.downloadTool(`https://github.com/atom/atom/releases/download/${version}/atom-amd64.deb`);
+			}
 			await exec("dpkg-deb", ["-x", downloadFile, folder]);
 			break;
 		}
 	}
 }
 
-async function addToPath(channel, folder) {
+async function addToPath(version, folder) {
 	switch (process.platform) {
 		case "win32": {
 			let atomfolder = "Atom";
-			if (channel !== "stable") {
-				atomfolder += ` ${channel[0].toUpperCase() + channel.substring(1)}`;
+			if (CHANNELS.includes(version) && version !== "stable") {
+				atomfolder += ` ${version[0].toUpperCase() + version.substring(1)}`;
+			} else if (version.includes("-beta")) {
+				atomfolder += " Beta";
 			}
 			const atomPath = path.join(folder, atomfolder, "resources", "cli");
 			if (process.env.GITHUB_ACTIONS) {
@@ -5048,8 +5079,10 @@ async function addToPath(channel, folder) {
 		}
 		case "darwin": {
 			let atomfolder = "Atom";
-			if (channel !== "stable") {
-				atomfolder += ` ${channel[0].toUpperCase() + channel.substring(1)}`;
+			if (CHANNELS.includes(version) && version !== "stable") {
+				atomfolder += ` ${version[0].toUpperCase() + version.substring(1)}`;
+			} else if (version.includes("-beta")) {
+				atomfolder += " Beta";
 			}
 			atomfolder += ".app";
 			const atomPath = path.join(folder, atomfolder, "Contents", "Resources", "app");
@@ -5071,8 +5104,10 @@ async function addToPath(channel, folder) {
 			const display = ":99";
 			await exec(`/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- ${display} -ac -screen 0 1280x1024x16 +extension RANDR`);
 			let atomfolder = "atom";
-			if (channel !== "stable") {
-				atomfolder += `-${channel}`;
+			if (CHANNELS.includes(version) && version !== "stable") {
+				atomfolder += `-${version}`;
+			} else if (version.includes("-beta")) {
+				atomfolder += "-beta";
 			}
 			const atomPath = path.join(folder, "usr", "share", atomfolder);
 			const apmPath = path.join(atomPath, "resources", "app", "apm", "bin");
