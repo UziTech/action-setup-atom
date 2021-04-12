@@ -38,7 +38,7 @@ jobs:
         if: matrix.source == 'npm' && matrix.version != 'stable'
         run: node ./src/action.js ${{ matrix.version }}
       - name: Don't download to repo directory
-        run: git diff --name-only --exit-code -- ':(exclude)dist/index.js'
+        run: git add . -N && git diff --name-only --exit-code -- . ':!dist'
       - name: Run Specs
         run: atom --test spec/${{ matrix.version }}
 
