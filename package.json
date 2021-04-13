@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/UziTech/action-setup-atom#readme",
   "dependencies": {
-    "@actions/core": "^1.2.6",
+    "@actions/core": "^1.2.7",
     "@actions/exec": "^1.0.4",
     "@actions/tool-cache": "^1.6.1"
   },
