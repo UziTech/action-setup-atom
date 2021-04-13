@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/UziTech/action-setup-atom/compare/v2.0.1...v2.0.2) (2021-04-13)
+
+
+### Bug Fixes
+
+* use core log methods instead of console ([870ead6](https://github.com/UziTech/action-setup-atom/commit/870ead63a2ac4ba7edc59e42b79b5653de16a276))
+
 ## [2.0.1](https://github.com/UziTech/action-setup-atom/compare/v2.0.0...v2.0.1) (2021-04-12)
 
 
