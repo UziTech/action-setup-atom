@@ -23,8 +23,8 @@ async function run() {
 		}
 		const version = channel || (process.env.GITHUB_ACTIONS && core.getInput("version").toLowerCase()) || process.argv[2] || "stable";
 		const folder = path.resolve(process.env.RUNNER_TEMP, process.argv[3] || "./atom");
-		console.log("version:", version);
-		console.log("folder:", folder);
+		core.info(`version: ${version}`);
+		core.info(`folder: ${folder}`);
 
 		await downloadAtom(version, folder);
 		await addToPath(version, folder);
@@ -34,7 +34,7 @@ async function run() {
 		if (process.env.GITHUB_ACTIONS) {
 			core.setFailed(error.message);
 		} else {
-			console.error(error);
+			core.error(error);
 			process.exit(1);
 		}
 	}
