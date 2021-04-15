@@ -9,7 +9,7 @@
     "build": "ncc build src/action.js --license license.txt",
     "prepare": "husky install"
   },
-  "bin": "./src/action.js",
+  "bin": "./src/bin.js",
   "files": [
     "src/"
   ],
