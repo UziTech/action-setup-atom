@@ -83,9 +83,9 @@ async function addToPath(version, folder) {
 			} else {
 				await exec("powershell", ["-Command", [
 					`[Environment]::SetEnvironmentVariable("PATH", "${atomPath};" + $env:PATH, "Machine")`,
-					"Start-Sleep -s 10",
-					"Restart-Computer",
-					"Start-Sleep -s 10",
+					// "Start-Sleep -s 10",
+					// "Restart-Computer",
+					// "Start-Sleep -s 10",
 				].join(";\n")]);
 			}
 			break;
