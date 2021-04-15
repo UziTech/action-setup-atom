@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/UziTech/action-setup-atom/compare/v2.0.2...v2.0.3) (2021-04-15)
+
+
+### Bug Fixes
+
+* add shebang to binary for npx ([72bce8c](https://github.com/UziTech/action-setup-atom/commit/72bce8c663327a4b0a23d593193b5518cf15b8b3))
+
 ## [2.0.2](https://github.com/UziTech/action-setup-atom/compare/v2.0.1...v2.0.2) (2021-04-13)
 
 
