@@ -21,7 +21,7 @@ Possible values:  `stable`, `beta`, `nightly`, `dev`, Any Atom [release](https:/
 ### Example usage
 
 ```yml
-uses: UziTech/action-setup-atom@v1
+uses: UziTech/action-setup-atom@v2
 with:
   version: 'beta'
 ```
@@ -40,7 +40,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
-    - uses: UziTech/action-setup-atom@v1
+    - uses: UziTech/action-setup-atom@v2
       with:
         version: ${{ matrix.version }}
     - name: Atom version
