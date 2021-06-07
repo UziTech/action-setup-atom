@@ -33,7 +33,7 @@
   "homepage": "https://github.com/UziTech/action-setup-atom#readme",
   "dependencies": {
     "@actions/core": "^1.3.0",
-    "@actions/exec": "^1.0.4",
+    "@actions/exec": "^1.1.0",
     "@actions/tool-cache": "^1.7.0"
   },
   "devDependencies": {
