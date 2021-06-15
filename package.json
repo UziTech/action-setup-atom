@@ -48,6 +48,6 @@
     "@vercel/ncc": "^0.28.6",
     "eslint": "^7.28.0",
     "husky": "^6.0.0",
-    "semantic-release": "^17.4.3"
+    "semantic-release": "^17.4.4"
   }
 }
