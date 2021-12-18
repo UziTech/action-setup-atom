@@ -45,7 +45,7 @@
     "@semantic-release/github": "^8.0.2",
     "@semantic-release/npm": "^8.0.3",
     "@semantic-release/release-notes-generator": "^10.0.3",
-    "@vercel/ncc": "^0.33.0",
+    "@vercel/ncc": "^0.33.1",
     "eslint": "^8.5.0",
     "husky": "^7.0.4",
     "semantic-release": "^18.0.1"
