@@ -11,6 +11,7 @@ if (!process.env.GITHUB_ACTIONS) {
 const tc = require("@actions/tool-cache");
 const core = require("@actions/core");
 const {exec} = require("@actions/exec");
+const { Octokit } = require("@octokit/rest");
 const {promisify} = require("util");
 const cp = require("child_process");
 const execAsync = promisify(cp.exec);
@@ -20,48 +21,36 @@ const writeFileAsync = promisify(fs.writeFile);
 const CHANNELS = [
 	"stable",
 	"beta",
+];
+
+const INVALID_CHANNELS = [
 	"nightly",
 	"dev",
 ];
 
-async function downloadAtom(version, folder) {
+async function downloadAtom(version, folder, token) {
 	if (typeof version !== "string") {
 		version = "stable";
 	}
 	if (typeof folder !== "string") {
 		folder = path.resolve(process.env.RUNNER_TEMP, "./atom");
 	}
+	if (typeof token !== "string") {
+		token = "";
+	}
 	switch (process.platform) {
 		case "win32": {
-			let downloadFile;
-			if (CHANNELS.includes(version)) {
-				downloadFile = await tc.downloadTool(`https://atom.io/download/windows_zip?channel=${version}`);
-			} else {
-				// atom-windows.zip
-				downloadFile = await tc.downloadTool(`https://github.com/atom/atom/releases/download/${version}/atom-windows.zip`);
-			}
+			const downloadFile = await tc.downloadTool(await findUrl(version, token));
 			await tc.extractZip(downloadFile, folder);
 			break;
 		}
 		case "darwin": {
-			let downloadFile;
-			if (CHANNELS.includes(version)) {
-				downloadFile = await tc.downloadTool(`https://atom.io/download/mac?channel=${version}`);
-			} else {
-				// atom-mac.zip
-				downloadFile = await tc.downloadTool(`https://github.com/atom/atom/releases/download/${version}/atom-mac.zip`);
-			}
+			const downloadFile = await tc.downloadTool(await findUrl(version, token));
 			await tc.extractZip(downloadFile, folder);
 			break;
 		}
 		default: {
-			let downloadFile;
-			if (CHANNELS.includes(version)) {
-				downloadFile = await tc.downloadTool(`https://atom.io/download/deb?channel=${version}`);
-			} else {
-				// atom-amd64.deb
-				downloadFile = await tc.downloadTool(`https://github.com/atom/atom/releases/download/${version}/atom-amd64.deb`);
-			}
+			const downloadFile = await tc.downloadTool(await findUrl(version, token));
 			await exec("dpkg-deb", ["-x", downloadFile, folder]);
 			break;
 		}
@@ -151,8 +140,47 @@ async function printVersions() {
 	}
 }
 
+async function findUrl(version, token) {
+	if (INVALID_CHANNELS.includes(version)) {
+		throw new Error(`'${version}' is not a valid version.`);
+	}
+	if (CHANNELS.includes(version)) {
+		const octokit = new Octokit({auth: token});
+		const {data: releases} = await octokit.rest.repos.listReleases({
+			owner: "atom",
+			repo: "atom",
+			per_page: 100,
+		});
+		let release;
+		if (version === "stable") {
+			release = releases.find(r => !r.draft && !r.prerelease);
+		} else {
+			release = releases.find(r => !r.draft && r.prerelease && r.tag_name.includes(version));
+		}
+		if (release) {
+			version = release.tag_name;
+		}
+	}
+
+	switch (process.platform) {
+		case "win32": {
+			// atom-windows.zip
+			return `https://github.com/atom/atom/releases/download/${version}/atom-windows.zip`;
+		}
+		case "darwin": {
+			// atom-mac.zip
+			return `https://github.com/atom/atom/releases/download/${version}/atom-mac.zip`;
+		}
+		default: {
+			// atom-amd64.deb
+			return `https://github.com/atom/atom/releases/download/${version}/atom-amd64.deb`;
+		}
+	}
+}
+
 module.exports = {
 	downloadAtom,
 	addToPath,
 	printVersions,
+	findUrl,
 };

@@ -16,12 +16,18 @@ This may be used as an [action](#github-action) in GitHub Actions or run with `n
 
 The version to test. Default `stable`.
 
-Possible values:  `stable`, `beta`, `nightly`, `dev`, Any Atom [release](https://github.com/atom/atom/releases) tag >= `v1.0.0` (e.g. `v1.50.0` or `v1.50.0-beta0`)
+Possible values:  `stable`, `beta`, Any Atom [release](https://github.com/atom/atom/releases) tag >= `v1.0.0` (e.g. `v1.50.0` or `v1.50.0-beta0`)
+
+#### `token`
+
+A GitHub token with read permission. Default `secrets.GITHUB_TOKEN`.
+
+The token is used to search Atom releases to find the latest `stable` and `beta` versions.
 
 ### Example usage
 
 ```yml
-uses: UziTech/action-setup-atom@v2
+uses: UziTech/action-setup-atom@v3
 with:
   version: 'beta'
 ```
@@ -40,7 +46,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
-    - uses: UziTech/action-setup-atom@v2
+    - uses: UziTech/action-setup-atom@v3
       with:
         version: ${{ matrix.version }}
     - name: Atom version

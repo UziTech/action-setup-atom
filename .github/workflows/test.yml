@@ -23,20 +23,14 @@ jobs:
       - name: Build Action
         if: matrix.source == 'action'
         run: npm run build
-      - name: Install Atom with Action
-        if: matrix.source == 'action' && matrix.version == 'stable'
-        uses: ./
       - name: Install Atom ${{ matrix.version }} with Action
-        if: matrix.source == 'action' && matrix.version != 'stable'
+        if: matrix.source == 'action'
         uses: ./
         with:
           version: ${{ matrix.version }}
-      - name: Install Atom with NPM
-        if: matrix.source == 'npm' && matrix.version == 'stable'
-        run: node ./src/action.js
       - name: Install Atom ${{ matrix.version }} with NPM
-        if: matrix.source == 'npm' && matrix.version != 'stable'
-        run: node ./src/action.js ${{ matrix.version }}
+        if: matrix.source == 'npm'
+        run: node ./src/action.js ${{ matrix.version }} ${{ secrets.GITHUB_TOKEN }}
       - name: Don't download to repo directory
         run: git add . -N && git diff --name-only --exit-code -- . ':!dist'
       - name: Run Specs
