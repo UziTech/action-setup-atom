@@ -27,7 +27,7 @@ The token is used to search Atom releases to find the latest `stable` and `beta`
 ### Example usage
 
 ```yml
-uses: UziTech/action-setup-atom@v2
+uses: UziTech/action-setup-atom@v3
 with:
   version: 'beta'
 ```
@@ -46,7 +46,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
-    - uses: UziTech/action-setup-atom@v2
+    - uses: UziTech/action-setup-atom@v3
       with:
         version: ${{ matrix.version }}
     - name: Atom version
