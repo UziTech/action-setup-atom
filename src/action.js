@@ -23,10 +23,11 @@ async function run() {
 		}
 		const version = channel || (process.env.GITHUB_ACTIONS && core.getInput("version").toLowerCase()) || process.argv[2] || "stable";
 		const folder = path.resolve(process.env.RUNNER_TEMP, process.argv[3] || "./atom");
+		const token = (process.env.GITHUB_ACTIONS && core.getInput("token")) || process.argv[4] || "";
 		core.info(`version: ${version}`);
 		core.info(`folder: ${folder}`);
 
-		await downloadAtom(version, folder);
+		await downloadAtom(version, folder, token);
 		await addToPath(version, folder);
 		await printVersions();
 

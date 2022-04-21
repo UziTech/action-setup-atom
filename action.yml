@@ -2,11 +2,15 @@ name: 'Setup Atom'
 description: 'Setup Atom and APM'
 inputs:
   version:
-    description: 'Version'
-    required: true
-    default: 'Stable'
+    description: 'Version, defaults to "stable"'
+    required: false
+    default: 'stable'
+  token:
+    description: 'GitHub token with read permission for finding stable and beta versions, defaults to secrets.GITHUB_TOKEN'
+    required: false
+    default: ${{ github.token }}
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
 branding:
   icon: 'code'
