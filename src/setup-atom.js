@@ -21,6 +21,9 @@ const writeFileAsync = promisify(fs.writeFile);
 const CHANNELS = [
 	"stable",
 	"beta",
+];
+
+const INVALID_CHANNELS = [
 	"nightly",
 	"dev",
 ];
@@ -138,6 +141,9 @@ async function printVersions() {
 }
 
 async function findUrl(version, token) {
+	if (INVALID_CHANNELS.includes(version)) {
+		throw new Error(`'${version}' is not a valid version.`);
+	}
 	if (CHANNELS.includes(version)) {
 		const octokit = new Octokit({auth: token});
 		const {data: releases} = await octokit.rest.repos.listReleases({
