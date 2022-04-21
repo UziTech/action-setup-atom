@@ -1,3 +1,18 @@
+# [3.0.0](https://github.com/UziTech/action-setup-atom/compare/v2.0.9...v3.0.0) (2022-04-21)
+
+
+### Bug Fixes
+
+* add token as npx argument ([a4b222d](https://github.com/UziTech/action-setup-atom/commit/a4b222da63b45260b307f54679729369a075da21))
+* add token input ([0c74667](https://github.com/UziTech/action-setup-atom/commit/0c746671282815787c48b45603b44e922e4daf86))
+* find channel by release version ([13b4008](https://github.com/UziTech/action-setup-atom/commit/13b400833022f7708e383fdcdb0e411fb9787e14))
+
+
+### BREAKING CHANGES
+
+* token is second argument and folder moved to third argument
+* dev and nightly channels no longer available.
+
 ## [2.0.9](https://github.com/UziTech/action-setup-atom/compare/v2.0.8...v2.0.9) (2022-03-18)
 
 
