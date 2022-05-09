@@ -48,7 +48,7 @@
     "@semantic-release/release-notes-generator": "^10.0.3",
     "@vercel/ncc": "^0.33.4",
     "eslint": "^8.15.0",
-    "husky": "^8.0.0",
+    "husky": "^8.0.1",
     "semantic-release": "^19.0.2"
   }
 }
