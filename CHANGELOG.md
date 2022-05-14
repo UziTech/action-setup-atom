@@ -1,3 +1,11 @@
+## [3.0.3](https://github.com/UziTech/action-setup-atom/compare/v3.0.2...v3.0.3) (2022-05-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/core to ^1.8.2 ([37d0f4e](https://github.com/UziTech/action-setup-atom/commit/37d0f4ee93a92d3808651cea6cd97bb3604be049))
+* **deps:** update dependency @actions/tool-cache to ^2.0.1 ([fa641bd](https://github.com/UziTech/action-setup-atom/commit/fa641bde337e2a20500ebbc9be685463dc2f9894))
+
 ## [3.0.2](https://github.com/UziTech/action-setup-atom/compare/v3.0.1...v3.0.2) (2022-05-13)
 
 
