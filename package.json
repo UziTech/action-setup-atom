@@ -1,6 +1,6 @@
 {
   "name": "setup-atom",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "Setup Atom and APM",
   "main": "./src/setup-atom.js",
   "scripts": {
