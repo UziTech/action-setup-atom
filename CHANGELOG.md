@@ -1,3 +1,10 @@
+## [3.0.7](https://github.com/UziTech/action-setup-atom/compare/v3.0.6...v3.0.7) (2022-10-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @octokit/rest to ^19.0.5 ([#346](https://github.com/UziTech/action-setup-atom/issues/346)) ([56ad8c6](https://github.com/UziTech/action-setup-atom/commit/56ad8c664feb8aea9533bc2a1185e79dc57f87fa))
+
 ## [3.0.6](https://github.com/UziTech/action-setup-atom/compare/v3.0.5...v3.0.6) (2022-08-15)
 
 
