@@ -70,7 +70,7 @@ jobs:
             git commit -m 'chore(build): 🧱 build [skip ci]' --no-verify -- dist
           fi
       - name: Realease 🎉
-        uses: cycjimmy/semantic-release-action@v2
+        uses: cycjimmy/semantic-release-action@v3
         id: semantic_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
